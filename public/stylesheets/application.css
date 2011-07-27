@@ -1,0 +1,11 @@
+.user_edit  { background-image: url(/ext/shared/icons/app/user_edit.png) !important; }
+.user_delete{ background-image:url(/ext/shared/icons/app/user_delete.png) !important; }
+.user_change_password{ background-image:url(/ext/shared/icons/app/key.png) !important; }
+.log{ background-image:url(/ext/shared/icons/app/report.png) !important; }
+
+
+.add {background-image: url( /ext/shared/icons/app/add.png ) !important;}
+.save {background-image: url( /ext/shared/icons/app/disk.png ) !important;}
+.wizard {background-image: url( /ext/shared/icons/app/wand.png ) !important;}
+
+.x-panel-default-framed { border-width:0px; }

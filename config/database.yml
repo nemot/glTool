@@ -1,0 +1,15 @@
+login: &login
+  adapter: mysql
+  username: root
+  password: Gimler12
+  encoding: utf8
+  socket: /var/run/mysqld/mysqld.sock
+
+development:
+  <<: *login
+  database: gl2_development
+
+production:
+  <<: *login
+  database: gl2_production
+

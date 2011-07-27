@@ -1,0 +1,9 @@
+ru:
+  session:
+    notice:
+      signed_out: Досвидания
+      signed_in: Успешно авторизовались
+      sign_in_failed: Не верный логин или пароль
+      sign_in_needed: Необходимо авторизоваться
+  user:
+    cant_create: Не правильно заданы параметры пользователя
