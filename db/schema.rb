@@ -10,10 +10,32 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 4) do
+ActiveRecord::Schema.define(:version => 6) do
+
+  create_table "clients", :force => true do |t|
+    t.string   "name",                               :null => false
+    t.string   "address",                            :null => false
+    t.string   "phone",                              :null => false
+    t.string   "email",                              :null => false
+    t.string   "director",                           :null => false
+    t.text     "payment_details",                    :null => false
+    t.boolean  "is_expeditor",    :default => false
+    t.float    "balance",         :default => 0.0,   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "roles", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "user_actions", :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.string   "action",     :null => false
+    t.string   "entity",     :null => false
+    t.text     "raw_data",   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

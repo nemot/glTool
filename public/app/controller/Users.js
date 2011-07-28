@@ -2,7 +2,7 @@ Ext.define('Gl.controller.Users', {
     extend: 'Ext.app.Controller',
 
     models:['User'],
-    stores:['Users', 'Roles'],
+    stores:['Users', 'Roles', 'UserActions'],
 
     init: function() {
       this.control({
@@ -12,8 +12,14 @@ Ext.define('Gl.controller.Users', {
         "#userSaveButton":{click:this.submitEditForm},
         "#editUserBtn":{click: this.editUser},
         "#changeUserPasswordBtn":{click: this.changePassword},
-        "#userChangePasswordBtn":{click: this.submitPassword}
+        "#userChangePasswordBtn":{click: this.submitPassword},
+        "#showLogBtn":{click:this.showActionsWindow}
       })
+    },
+
+    showActionsWindow: function(){
+      var rec = Ext.ComponentQuery.query('usersgrid')[0].getSelectionModel().getSelection()[0];
+      var win = Ext.create("Gl.view.users.ActionsLogWindow", {user:rec}).show();
     },
 
     submitPassword: function(btn){

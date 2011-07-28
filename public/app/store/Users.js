@@ -7,13 +7,6 @@ Ext.define('Gl.store.Users', {
     url : '/users',
     reader: {type:'json', root:'users'},
     writer: {type:'json', root:'users', writeAllFields:true}
-  },
-
-
-  listeners:{
-    load:function(cmp){
-      
-    }
   }
 
 });

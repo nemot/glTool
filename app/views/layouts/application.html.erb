@@ -7,9 +7,22 @@
   <link rel="stylesheet" type="text/css" href="/stylesheets/application.css" />
   <link rel="stylesheet" type="text/css" href="/ext/shared/example.css" />
   <script type="text/javascript" src="/ext/ext-all.js"></script>
+  <script type="text/javascript" src="/ext/locale/ext-lang-ru.js"></script>
   <script type="text/javascript" src="/ext/shared/examples.js"></script>
   <script type="text/javascript"> Ext.ns("Gl"); </script>
+  <script>
+    var current_user = {
+      id:<%= current_user.id %>, 
+      login:"<%= current_user.login %>", 
+      email:"<%= current_user.email %>", 
+      fio:'<%= current_user.fio %>', 
+      position:"<%= current_user.position %>", 
+      was_online:"<%= current_user.was_online %>", 
+      role_id:<%= current_user.role_id %>
+    }   
+  </script>
   <script type="text/javascript" src="app.js"></script>
+  
 </head>
 <body>
 

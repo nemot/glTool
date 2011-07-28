@@ -1,24 +1,10 @@
-Ext.define('Gl.view.users.WasInSystemColumn', {
-  extend: 'Ext.grid.column.Column',
-  alias: 'widget.user_wasat_column',
-
-  renderer:function(v){
-    var result = "Ни когда"
-    if(v=="1"){
-      result = "<span style='color:green; font-weight:bold'>Онлайн</span>"
-    } else {
-      if(v){ result = Ext.Date.format(Ext.Date.parse(v,'c'),"i:h d.m.y" ); }
-    }
-    return result
-  }
-})
-
-Ext.define('Gl.view.users.MainGrid', {
+Ext.define('Gl.view.clients.MainGrid', {
   extend: 'Ext.grid.Panel',
-  alias : 'widget.usersgrid',
+  alias : 'widget.clientsgrid',
 
   flex:1,
-  store: 'Users',
+  store: 'Clients',
+  // TODO Доделать таблицу клиентов
   columns:[
     {header: 'Логин', dataIndex:'login', menuDisabled:true},
     {header: 'ФИО', dataIndex:'fio', flex:1, menuDisabled:true},

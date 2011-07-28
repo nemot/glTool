@@ -3,6 +3,11 @@ class UserMailer < ActionMailer::Base
 
   def new_password(user, password)  
     @password = password; @user = user;
-    mail(:to => @user.email, :subject => "GreenLineTool: Ваш пароль был изменен")  
+    mail(:to => @user.email, :subject => "GreenLineTool: Изменен пароль")  
   end  
+
+  def registration(user, password)
+    @password = password; @user = user;
+    mail(:to => @user.email, :subject => "GreenLineTool: Регистрация в системе")  
+  end
 end

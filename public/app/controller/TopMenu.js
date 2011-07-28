@@ -13,7 +13,7 @@ Ext.define('Gl.controller.TopMenu', {
     },
 
     afterTopMenuRendered: function(cmp){
-      cmp.query('button[action=users]')[0].toggle(true);
+      cmp.query('button[action=clietns]')[0].toggle(true);
     },
 
     addUsersGridToContainer: function(mainContainer){

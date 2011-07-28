@@ -1,3 +1,5 @@
+
+
 Ext.Loader.setConfig({
   enabled: true,
   paths: {
@@ -13,4 +15,5 @@ Ext.require('Gl.Application');
 Ext.onReady(function() {
   Ext.tip.QuickTipManager.init();
   Ext.create('Gl.Application');
+  
 });

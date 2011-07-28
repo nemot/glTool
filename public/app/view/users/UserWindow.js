@@ -52,7 +52,7 @@ Ext.define('Gl.view.users.UserWindow', {
           {items:[
             {fieldLabel:'Логин', vtype:'login', id:'userLoginField', tabIndex:1, name:'user[login]'},
             {fieldLabel:'ФИО', tabIndex:3, name:'user[fio]'},
-            {fieldLabel:'Пароль', xtype:'passgenfield', tabIndex:5, name:'user[password]'}
+            {fieldLabel:'Пароль', xtype:'textfield', tabIndex:5, name:'user[password]'}
           ]},{items:[
             {fieldLabel:'Email', vtype:'email', tabIndex:2, name:'user[email]'},
             {fieldLabel:'Должность', tabIndex:4, name:'user[position]'},
