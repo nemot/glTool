@@ -13,6 +13,9 @@ Ext.define('Gl.model.Client', {
       {name:'is_expeditor',  type:'boolean'}
       
     ],
+    validations: [
+        {type: 'presence',  field: 'name'}
+    ],
     proxy: {
       type: 'rest',
       url : '/clients',

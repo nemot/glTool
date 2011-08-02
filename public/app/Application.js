@@ -4,6 +4,7 @@
  * We define our own Application class because this way we can also
  * easily define the dependencies.
  */
+
 Ext.define('Gl.Application', {
     extend: 'Ext.app.Application',
     name: 'Gl',
@@ -12,7 +13,8 @@ Ext.define('Gl.Application', {
 
     controllers: [
       'TopMenu',
-      'Users'
+      'Users',
+      'Clients'
     ],
 
     autoCreateViewport: true,
@@ -26,3 +28,14 @@ Ext.define('Gl.Application', {
       Ext.getBody().on("contextmenu", Ext.emptyFn, null, {preventDefault: true});
     }
 });
+
+
+
+Ext.define("Gl.Store", {
+  extend:'Ext.data.Store',
+  listeners: {
+    load: function(store, records, successful, operation, options){
+
+    }
+  }
+})

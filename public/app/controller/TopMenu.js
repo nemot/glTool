@@ -4,7 +4,7 @@ Ext.define('Gl.controller.TopMenu', {
     init: function() {
       this.control({
         'topmenu': {afterrender: this.afterTopMenuRendered},
-        'maincontainer': {afterrender: this.addUsersGridToContainer},
+        'maincontainer': {afterrender: this.showDefaultController},
         'topmenu > button[action=users]': { click: this.onUsersClick },
         'topmenu > button[action=statements]': { click: this.onStatementsClick },
         'topmenu > button[action=clietns]': { click: this.onClientsClick },
@@ -16,8 +16,8 @@ Ext.define('Gl.controller.TopMenu', {
       cmp.query('button[action=clietns]')[0].toggle(true);
     },
 
-    addUsersGridToContainer: function(mainContainer){
-      this.addToMainContainer({xtype:'usersgrid'})
+    showDefaultController: function(mainContainer){
+      this.addToMainContainer({xtype:'clientsgrid'})
     },
 
     onUsersClick: function(self){
@@ -27,7 +27,7 @@ Ext.define('Gl.controller.TopMenu', {
     
     onClientsClick: function(self){
       self.toggle(true);
-      this.addToMainContainer({xtype:'button', text:'clients'})
+      this.addToMainContainer({xtype:'clientsgrid'})
     },
 
     onStatementsClick: function(self){

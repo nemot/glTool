@@ -8,10 +8,13 @@ Ext.define('Gl.view.Viewport', {
     requires: [
       'Gl.view.TopMenu',
       'Gl.view.MainContainer',
+
       'Gl.view.users.MainGrid',
       'Gl.view.users.UserWindow',
       'Gl.view.users.EditUserWindow',
-      'Gl.view.users.ChangePasswordWindow'
+      'Gl.view.users.ChangePasswordWindow',
+
+      'Gl.view.clients.MainGrid',
     ],
     id: 'viewport',
     layout: 'border',

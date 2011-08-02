@@ -3,6 +3,9 @@
 .user_change_password{ background-image:url(/ext/shared/icons/app/key.png) !important; }
 .log{ background-image:url(/ext/shared/icons/app/report.png) !important; }
 
+.edit  { background-image: url(/ext/shared/icons/app/pencil.png) !important; }
+.delete{ background-image:url(/ext/shared/icons/app/delete.png) !important; }
+
 
 .add {background-image: url( /ext/shared/icons/app/add.png ) !important;}
 .save {background-image: url( /ext/shared/icons/app/disk.png ) !important;}
