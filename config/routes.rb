@@ -20,6 +20,11 @@ Gl2::Application.routes.draw do
     end
   end
 
-  resources :clients
+  resources :clients do
+    member do
+      get 'users'
+    end
+  end
+  resources :client_transactions
 
 end

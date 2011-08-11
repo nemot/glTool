@@ -10,7 +10,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 7) do
+ActiveRecord::Schema.define(:version => 10) do
+
+  create_table "client_users", :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.integer  "client_id",  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "clients", :force => true do |t|
     t.string   "name",                               :null => false
@@ -32,10 +39,12 @@ ActiveRecord::Schema.define(:version => 7) do
   end
 
   create_table "transactions", :force => true do |t|
-    t.float    "value",       :default => 0.0, :null => false
-    t.string   "description",                  :null => false
+    t.float    "value",            :default => 0.0,                   :null => false
+    t.string   "description",                                         :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "client_id",        :default => 1
+    t.datetime "date_of_transfer", :default => '2011-08-09 15:07:25'
   end
 
   create_table "user_actions", :force => true do |t|

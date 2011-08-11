@@ -52,6 +52,8 @@ Ext.define('Gl.view.clients.MainGrid', {
     var rec = grid.getSelectionModel().getSelection()[0];
 
     var editAction = Ext.create('Ext.Action', { iconCls: 'edit', text: 'Изменить', id:'editClientBtn' });
+    var financesAction = Ext.create('Ext.Action', { iconCls: 'money', text: 'Финансы', id:'financesClientBtn' });
+    var userPermissions = Ext.create('Ext.Action', { iconCls: 'key', text: 'Права доступа', id:'permissionsClientBtn' });
 
 
     var deleteConfirmationText =  "Вы хотите удалить клиента?<br/><br/>"
@@ -70,7 +72,7 @@ Ext.define('Gl.view.clients.MainGrid', {
     });
 
     Ext.create('Ext.menu.Menu', {
-        items: [ editAction, deleteAction ]
+        items: [ financesAction, userPermissions, editAction, deleteAction ]
     }).showAt(e.getXY());
     
   }

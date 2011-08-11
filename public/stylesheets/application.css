@@ -5,6 +5,12 @@
 
 .edit  { background-image: url(/ext/shared/icons/app/pencil.png) !important; }
 .delete{ background-image:url(/ext/shared/icons/app/delete.png) !important; }
+.money{ background-image:url(/ext/shared/icons/app/money.png) !important; }
+.money_add{ background-image:url(/ext/shared/icons/app/money_add.png) !important; }
+.money_save{ background-image:url(/ext/shared/icons/app/save.png) !important; }
+.money_delete{ background-image:url(/ext/shared/icons/app/money_delete.png) !important; }
+.refresh{ background-image:url(/ext/shared/icons/app/arrow_refresh.png) !important; }
+.key{ background-image:url(/ext/shared/icons/app/key.png) !important; }
 
 
 .add {background-image: url( /ext/shared/icons/app/add.png ) !important;}
@@ -12,3 +18,6 @@
 .wizard {background-image: url( /ext/shared/icons/app/wand.png ) !important;}
 
 .x-panel-default-framed { border-width:0px; }
+
+.pred {color:red; cursor:pointer;}
+.pgreen {color:green; cursor:pointer; font-weight:bold;}

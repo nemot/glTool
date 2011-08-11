@@ -15,6 +15,10 @@ Ext.define('Gl.view.Viewport', {
       'Gl.view.users.ChangePasswordWindow',
 
       'Gl.view.clients.MainGrid',
+      'Gl.view.clients.ClientWindow',
+      'Gl.view.clients.FinancesWindow',
+      'Gl.view.clients.PermissionsWindow',
+
     ],
     id: 'viewport',
     layout: 'border',

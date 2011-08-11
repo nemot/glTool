@@ -29,13 +29,3 @@ Ext.define('Gl.Application', {
     }
 });
 
-
-
-Ext.define("Gl.Store", {
-  extend:'Ext.data.Store',
-  listeners: {
-    load: function(store, records, successful, operation, options){
-
-    }
-  }
-})

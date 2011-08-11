@@ -24,7 +24,6 @@ Ext.define('Gl.view.users.ActionsLogWindow', {
           {header: 'Действие', dataIndex:'action', flex:1, menuDisabled:true}
         ],
         dockedItems: [{ xtype: 'pagingtoolbar', store: 'UserActions', dock: 'bottom', displayInfo: false }],
-
       }
     ];
     this.callParent();

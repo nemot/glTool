@@ -1,27 +1,63 @@
-Ext.define('Gl.view.clients.ClientWindow', {
+Ext.define('Gl.view.clients.FinancesWindow', {
   extend: 'Ext.window.Window',
-  alias : 'widget.clientwindow',
-  width:550, height:330, modal:true, layout:'fit',
+  alias : 'widget.financeswindow',
+  width:800, height:600, modal:true, layout: {type: 'border'},
   rec: null,
-  title:'Финансы клиента',
+  title:'Финансы клиента: ',
 
   buttons:[
     {text:'Отмена', height:25, handler:function(){ 
       Ext.ComponentQuery.query('financeswindow')[0].close() 
     }},
-//    {text:'Сохранить', iconCls:'save', height:25, id:'clientSaveButton'}
   ],
 
   initComponent: function(params){
     // Фокусируем первое поле
-//    this.listeners = {afterrender:function(){Ext.getCmp('clientNameField').focus()}}
+    this.listeners = {afterrender:function(){Ext.getCmp('clientFinancesValueField').focus()}}
     // Закидываем в айтемы окошко
-    this.items = [ ];
+    this.items = [
+      {xtype:'form', id:'newTransactionForm', region:'west', defaults:{labelAlign:'top', anchor:'100%'}, width:200, frame:true, items:[
 
-    // Меняем название окошка
-//    if(this.rec.getId()>1)
-//      this.title = "Изменение клиента: '"+this.rec.get('name')+"'"
+        {xtype:'numberfield', fieldLabel:'Сумма', name:'value', id:'clientFinancesValueField',
+          hideTrigger: true,decimalSeparator:',',decimalPrecision:2, emptyText:'Сумма'
+        },
+        {xtype:'datefield', fieldLabel:'Дата',  name:'date_of_transfer', allowBlank:false, format:'d.M.Y',
+          submitFormat:'c', value: new Date()
+        },
+        {xtype:'textareafield', height:50, name:'description', emptyText:'Примечание'},
+
+        {xtype:'panel', layout:'hbox', frame:true, items:[
+          
+          {xtype:'button', text:'Удалить', iconCls:'money_delete', id:'deleteTransactionBtn', hidden:true},
+          {flex:1, xtype:'label'},
+          {xtype:'button', text:'Сохранить', iconCls:'save', id:'saveTransactionBtn', hidden:true},
+          {xtype:'button', text:'Пополнить', iconCls:'money_add', id:'addTransactionBtn'}
+        ]},
+        {xtype:'button', text:'Новое пополнение', id:'clearTransactionFormBtn', flex:1 , hidden:true, margin:'15 0 0 0'},
+        
+      ], collapsible:true, title:'Пополнить счет'},
+      {xtype:'grid', region:'center', id:'clientFinancesGrid', flex:1, store: 'ClientTransactions',
+        columns:[
+          {header: 'Дата', xtype:'datecolumn', dataIndex:'date_of_transfer', format:'d.M.Y', menuDisabled:true},
+          {header: 'Сума', dataIndex:'value',  menuDisabled:true},
+          {header: 'Примечание', dataIndex:'description', flex:1, menuDisabled:true}
+        ],
+        dockedItems: [{ xtype: 'pagingtoolbar', store: 'ClientTransactions', dock: 'bottom', displayInfo: false }]
+      }
+    ];
+
+    
+    if(this.rec.getId()>1) {
+      // Меняем название окошка
+      this.title = "Финансы клиента: "+this.rec.get('name');
+    }
+
+    this.on('afterrender', function(wn){
+      Ext.getCmp('clientFinancesGrid').getStore().getProxy().extraParams.client_id = this.rec.get('id');
+      Ext.getCmp('clientFinancesGrid').getStore().load();
+    })
 
     this.callParent();
   }
 });
+
