@@ -3,7 +3,7 @@ Gl2::Application.routes.draw do
   # first created -> highest priority.
 
   
-  root :to=>"statements#index"
+  root :to=>"home#index"
    
   #for user_sessions
   get   "sign_in"   => "user_sessions#new"
@@ -27,5 +27,7 @@ Gl2::Application.routes.draw do
   end
   put "clients/:id/users/:user_id" => "clients#update_permission"
   resources :client_transactions
+
+  resources :requests
 
 end
