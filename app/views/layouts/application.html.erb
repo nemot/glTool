@@ -18,7 +18,10 @@
       fio:'<%= current_user.fio %>', 
       position:"<%= current_user.position %>", 
       was_online:"<%= current_user.was_online %>", 
-      role_id:<%= current_user.role_id %>
+      role_id:<%= current_user.role_id %>,
+      is_engineer: function(){
+        return this.role_id==4
+      }
     }   
   </script>
   <script type="text/javascript" src="app.js"></script>

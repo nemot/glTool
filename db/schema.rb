@@ -10,7 +10,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 10) do
+ActiveRecord::Schema.define(:version => 15) do
+
+  create_table "car_types", :force => true do |t|
+    t.string "name", :null => false
+  end
 
   create_table "client_users", :force => true do |t|
     t.integer  "user_id",    :null => false
@@ -32,10 +36,51 @@ ActiveRecord::Schema.define(:version => 10) do
     t.datetime "updated_at"
   end
 
+  create_table "countries", :force => true do |t|
+    t.string "name",       :default => "", :null => false
+    t.string "short_name", :default => "", :null => false
+  end
+
+  create_table "loads", :force => true do |t|
+    t.string "name"
+    t.string "gng"
+    t.string "etsng"
+  end
+
+  create_table "requests", :force => true do |t|
+    t.integer  "client_id",                                        :null => false
+    t.integer  "station_from_id",                                  :null => false
+    t.integer  "station_to_id",                                    :null => false
+    t.integer  "load_id",                                          :null => false
+    t.date     "date_of_issue",          :default => '2011-08-17', :null => false
+    t.date     "valid_until",            :default => '2011-08-31', :null => false
+    t.string   "type_of_transportation", :default => "",           :null => false
+    t.string   "ownership",              :default => "МПС",     :null => false
+    t.integer  "car_type_id",                                      :null => false
+    t.string   "sender",                 :default => "",           :null => false
+    t.string   "receiver",               :default => "",           :null => false
+    t.string   "gu12",                   :default => "",           :null => false
+    t.boolean  "rate_for_car",           :default => true,         :null => false
+    t.float    "client_sum",             :default => 0.0,          :null => false
+    t.float    "jd_sum",                 :default => 0.0,          :null => false
+    t.integer  "cars_num",               :default => 0,            :null => false
+    t.integer  "common_tonnage",         :default => 0,            :null => false
+    t.integer  "created_user_id",                                  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "roles", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "stations", :force => true do |t|
+    t.integer "country_id", :default => 0,       :null => false
+    t.string  "code",       :default => "00000", :null => false
+    t.string  "name",       :default => "",      :null => false
+    t.string  "short_name", :default => "",      :null => false
   end
 
   create_table "transactions", :force => true do |t|
@@ -44,7 +89,7 @@ ActiveRecord::Schema.define(:version => 10) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "client_id",        :default => 1
-    t.datetime "date_of_transfer", :default => '2011-08-09 15:07:25'
+    t.datetime "date_of_transfer", :default => '2011-08-17 10:27:27'
   end
 
   create_table "user_actions", :force => true do |t|

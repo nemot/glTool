@@ -10,7 +10,8 @@ Ext.define('Gl.controller.Clients', {
         "#clientSaveButton":{click:this.saveClient},
         "#editClientBtn": {click:this.editClient},
         "#financesClientBtn": {click:this.showFinances},
-        "clientsgrid":{itemdblclick:this.showPermissionsWindow},
+
+        "clientsgrid":{itemdblclick: (current_user.is_engineer() ? this.editClient : this.showFinances)},
         // Транзакции        
         "#clientFinancesGrid": {itemclick:this.editTransaction},
         "#addTransactionBtn": {click:this.addTransaction},

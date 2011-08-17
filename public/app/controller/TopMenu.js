@@ -6,18 +6,18 @@ Ext.define('Gl.controller.TopMenu', {
         'topmenu': {afterrender: this.afterTopMenuRendered},
         'maincontainer': {afterrender: this.showDefaultController},
         'topmenu > button[action=users]': { click: this.onUsersClick },
-        'topmenu > button[action=statements]': { click: this.onStatementsClick },
+        'topmenu > button[action=requests]': { click: this.onRequestsClick },
         'topmenu > button[action=clietns]': { click: this.onClientsClick },
         'topmenu > button[action=reports]': { click: this.onReportsClick },
       });
     },
 
     afterTopMenuRendered: function(cmp){
-      cmp.query('button[action=clietns]')[0].toggle(true);
+      cmp.query('button[action=requests]')[0].toggle(true);
     },
 
     showDefaultController: function(mainContainer){
-      this.addToMainContainer({xtype:'clientsgrid'})
+      this.addToMainContainer({xtype:'requestsgrid'})
     },
 
     onUsersClick: function(self){
@@ -30,9 +30,9 @@ Ext.define('Gl.controller.TopMenu', {
       this.addToMainContainer({xtype:'clientsgrid'})
     },
 
-    onStatementsClick: function(self){
+    onRequestsClick: function(self){
       self.toggle(true)
-      this.addToMainContainer({xtype:'button', text:'Statements'})
+      this.addToMainContainer({xtype:'requestsgrid'})
     },
 
     onReportsClick: function(self){

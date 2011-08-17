@@ -14,7 +14,8 @@ Ext.define('Gl.Application', {
     controllers: [
       'TopMenu',
       'Users',
-      'Clients'
+      'Clients',
+      'Requests'
     ],
 
     autoCreateViewport: true,

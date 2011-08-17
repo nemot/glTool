@@ -16,10 +16,10 @@ Ext.define('Gl.view.TopMenu', {
   initComponent: function(){
     current_user = new Gl.model.User(current_user);
     this.items = [
-      {text:'Заявки', enableToggle:true, toggleGroup:'tabs', action:'statements'},
+      {text:'Заявки', enableToggle:true, toggleGroup:'tabs', action:'requests'},
       {text:'Клиенты', enableToggle:true, toggleGroup:'tabs', action:'clietns'},
       {text:'Отчеты', enableToggle:true, toggleGroup:'tabs', action:'reports'},
-      {text:'Пользователи', enableToggle:true, toggleGroup:'tabs', action:'users'},
+      {text:'Пользователи', enableToggle:true, toggleGroup:'tabs', action:'users', hidden:current_user.is_engineer()},
       {flex:1, xtype:'label', tpl:this.userInfoTpl, data:{login:current_user.get('login'), fio:current_user.get('fio')}},
       {text:'Выход', width:70, margin:'0 3 0 0', handler:function(){window.location='/sign_out'}}
     ];

@@ -45,12 +45,10 @@ Ext.define('Gl.view.clients.FinancesWindow', {
         dockedItems: [{ xtype: 'pagingtoolbar', store: 'ClientTransactions', dock: 'bottom', displayInfo: false }]
       }
     ];
-
     
-    if(this.rec.getId()>1) {
-      // Меняем название окошка
-      this.title = "Финансы клиента: "+this.rec.get('name');
-    }
+    // Меняем название окошка
+    this.title = "Финансы клиента: "+this.rec.get('name');
+  
 
     this.on('afterrender', function(wn){
       Ext.getCmp('clientFinancesGrid').getStore().getProxy().extraParams.client_id = this.rec.get('id');

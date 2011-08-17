@@ -9,6 +9,8 @@ Ext.define('Gl.model.User', {
       {name:'was_online', type:'string'}, 
       {name:'role_id', type:'int'}
     ],
+    is_engineer:function(){ return this.get('role_id')==4 },
+    is_admin:function(){ return this.get('role_id')!=4 },
     proxy: {
       type: 'rest',
       url : '/users',

@@ -25,6 +25,7 @@ Gl2::Application.routes.draw do
       get 'users'
     end
   end
+  put "clients/:id/users/:user_id" => "clients#update_permission"
   resources :client_transactions
 
 end

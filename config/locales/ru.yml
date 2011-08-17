@@ -19,6 +19,8 @@ ru:
       create: Создал клиента
       update: Изменил данные клиента
       remove: Удалил клиента
+      update_permission_true: Открыл доступ к клиенту
+      update_permission_false: Закрыл доступ к клиенту
     transaction:
       create: Пополнил счет клиента
       update: Изменил пополнение счета клиента

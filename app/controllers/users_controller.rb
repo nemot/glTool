@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_filter :require_user
+  before_filter :no_engineer
 
   def index
     @users = User.all

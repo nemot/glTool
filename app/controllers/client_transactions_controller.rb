@@ -1,6 +1,6 @@
 class ClientTransactionsController < ApplicationController
   
-  before_filter :require_user
+  before_filter :require_user, :no_engineer
 
   def index
     nodes = Transaction.find_all_by_client_id( params[:client_id].to_i,

@@ -7,7 +7,7 @@ Ext.define('Gl.view.clients.MainGrid', {
 
   columns:[
     {header: 'Название организации', dataIndex:'name', flex:1, menuDisabled:true},
-    {header: 'Баланс', dataIndex:'balance', menuDisabled:true},
+    {header: 'Баланс', dataIndex:'balance', menuDisabled:true, hidden:current_user.is_engineer()},
     {header: 'Экспедитор', dataIndex:'is_expeditor', type:'boolean', width:80, menuDisabled:true, renderer:function(val){
       var res = val ? "Да" : "Нет"
       return res;
@@ -72,7 +72,12 @@ Ext.define('Gl.view.clients.MainGrid', {
     });
 
     Ext.create('Ext.menu.Menu', {
-        items: [ financesAction, userPermissions, editAction, deleteAction ]
+        items: [ 
+          (current_user.is_engineer() ? '' : financesAction), 
+          (current_user.is_engineer() ? '' : userPermissions), 
+          editAction, 
+          deleteAction 
+        ]
     }).showAt(e.getXY());
     
   }
