@@ -10,10 +10,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 15) do
+ActiveRecord::Schema.define(:version => 19) do
 
   create_table "car_types", :force => true do |t|
     t.string "name", :null => false
+  end
+
+  create_table "cars", :force => true do |t|
+    t.integer "request_id",                      :null => false
+    t.boolean "in_use",        :default => true
+    t.string  "number",        :default => ""
+    t.integer "tonnage",       :default => 0
+    t.float   "weight",        :default => 0.0
+    t.date    "shipping_date"
+    t.string  "waybill",       :default => ""
   end
 
   create_table "client_users", :force => true do |t|
@@ -36,6 +46,23 @@ ActiveRecord::Schema.define(:version => 15) do
     t.datetime "updated_at"
   end
 
+  create_table "codes", :force => true do |t|
+    t.integer "car_id",                        :null => false
+    t.integer "place_id",                      :null => false
+    t.string  "number",       :default => "",  :null => false
+    t.float   "rate_jd_real", :default => 0.0
+    t.float   "rate_jd",      :default => 0.0
+    t.float   "rate_client",  :default => 0.0
+  end
+
+  create_table "costs", :force => true do |t|
+    t.integer "place_id",                      :null => false
+    t.string  "name",         :default => ""
+    t.float   "rate_jd",      :default => 0.0
+    t.float   "rate_client",  :default => 0.0
+    t.integer "payment_type", :default => 0
+  end
+
   create_table "countries", :force => true do |t|
     t.string "name",       :default => "", :null => false
     t.string "short_name", :default => "", :null => false
@@ -47,12 +74,18 @@ ActiveRecord::Schema.define(:version => 15) do
     t.string "etsng"
   end
 
+  create_table "places", :force => true do |t|
+    t.integer "request_id", :null => false
+    t.integer "country_id", :null => false
+    t.integer "exp_id",     :null => false
+  end
+
   create_table "requests", :force => true do |t|
     t.integer  "client_id",                                        :null => false
     t.integer  "station_from_id",                                  :null => false
     t.integer  "station_to_id",                                    :null => false
     t.integer  "load_id",                                          :null => false
-    t.date     "date_of_issue",          :default => '2011-08-17', :null => false
+    t.date     "date_of_issue",          :default => '2011-08-23', :null => false
     t.date     "valid_until",            :default => '2011-08-31', :null => false
     t.string   "type_of_transportation", :default => "",           :null => false
     t.string   "ownership",              :default => "МПС",     :null => false
@@ -89,7 +122,7 @@ ActiveRecord::Schema.define(:version => 15) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "client_id",        :default => 1
-    t.datetime "date_of_transfer", :default => '2011-08-17 10:27:27'
+    t.datetime "date_of_transfer", :default => '2011-08-23 08:21:31'
   end
 
   create_table "user_actions", :force => true do |t|

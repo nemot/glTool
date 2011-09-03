@@ -2,7 +2,9 @@ Ext.define('Gl.model.Request', {
   extend: 'Ext.data.Model',
 
   fields: [
+    {name:'id', type:'id'},
     {name:'client_id', type:'int'}, 
+    {name:'client_name', type:'string'}, 
     {name:'station_from_id', type:'int'}, 
     {name:'station_from_name', type:'string'}, 
     {name:'station_to_id', type:'int'}, 

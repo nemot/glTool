@@ -1,0 +1,28 @@
+--
+# Тестовые клиент и экспедитор
+1:
+  id: 1
+  name: "Тестовый клиент"
+  address: "Some str. 29"
+  phone: "+000000000000"
+  email: "client@example.com"
+  director: "Василий Пупкин"
+  payment_details: "Реквизиты тестового клиента"
+2:
+  id: 2
+  name: "Тестовый экспедитор"
+  address: "Some str. 30"
+  phone: "+111111111111"
+  email: "expeditor@example.com"
+  director: "Василий Сергеевич Пупкин"
+  payment_details: "Реквизиты тестового экспедитора"
+  is_expeditor: true
+3:
+  id: 3
+  name: "Тестовый экспедитор 2"
+  address: "Some str. 31"
+  phone: "+2222222222222"
+  email: "expeditor@example.com"
+  director: "Василий Васильевич Пупкин"
+  payment_details: "Реквизиты тестового экспедитора2"
+  is_expeditor: true

@@ -29,5 +29,9 @@ Gl2::Application.routes.draw do
   resources :client_transactions
 
   resources :requests
+  resources :stations
+  resources :loads
+  resources :car_types
+  resources :places
 
 end

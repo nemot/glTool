@@ -1,8 +1,3 @@
-/**
- * The main viewport, split in to a west and center region.
- * The North region should also be shown by default in the packaged
- * (non-live) version of the docs. TODO: close button on north region.
- */
 Ext.define('Gl.view.Viewport', {
     extend: 'Ext.container.Viewport',
     requires: [

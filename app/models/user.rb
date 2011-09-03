@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   has_many :client_users
   has_many :clients, :through=>:client_users
   has_many :actions, :class_name=>"UserAction"
-  has_many :requests
+  has_many :created_requests, :class_name=>"Request", :foreign_key=>"created_user_id"
 
 
   def is_engineer?
@@ -41,6 +41,11 @@ class User < ActiveRecord::Base
 
   def log action, entity="", raw_data=""
     self.actions.create({:action=>action, :entity=>entity, :raw_data=>raw_data})
+  end
+
+
+  def client_ids
+    "-1"+self.clients.collect{|c| ",#{c.id}" }.uniq.to_s
   end
 
 
