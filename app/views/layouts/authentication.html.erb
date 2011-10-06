@@ -11,10 +11,34 @@
   <script type="text/javascript" src="/ext/ext-all.js"></script>
   <script type="text/javascript" src="/ext/shared/examples.js"></script>
   <script type="text/javascript"> Ext.ns("Gl"); </script>
+
+  <style>
+    #browserLogo {
+      position:absolute;
+      z-index:0; bottom:0px; left:0px;
+      font-family:Arial;
+      font-size:24px;
+      font-weight:bold;
+      color: white;
+      vertical-align:top;
+    }
+    #browserLogo img {
+      margin-top:3px;
+      zoom: 1;
+      filter: alpha(opacity=50);
+      opacity: 0.5;
+    }
+  </style>
 </head>
 <body>
 
 <%= yield %>
 
+
+<div id="browserLogo">
+  Стабильно работает в браузерах: 
+  <a href="http://google.com/chrome" title="Скачать Chrome"><img src="/images/chrome-logo.svg", width='25px'></a>
+  <a href="http://www.mozilla.org/ru/firefox/" title="Скачать Firefox"><img src="/images/firefox-logo.png", width='25px'></a>
+</div>
 </body>
 </html>

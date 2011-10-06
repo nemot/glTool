@@ -2,17 +2,25 @@ Ext.define('Rq.store.Costs', {
   extend: 'Ext.data.Store',
   fields:[
     {name:'id', type:'int'},
-    {name:'place_id', type:'int'},
-    {name:'country_name', type:'string'},
-    {name:'name', type:'string'},
-    {name:'rate_jd', type:'float'},
-    {name:'rate_client', type:'float'},
-    {name:'payment_type', type:'int'}
+    {name:'place_id', type:'int', defaultValue:null},
+    {name:'country_name', type:'string', defaultValue:''},
+    {name:'name', type:'string', defaultValue:'дсб'},
+    {name:'rate_jd', type:'float', defaultValue:0},
+    {name:'rate_client', type:'float', defaultValue:0},
+    {name:'payment_type', type:'int', defaultValue:0}
   ],
 
   autoLoad:true, 
   sorters: [{property : 'id', direction: 'DESC'}],
   
-  data: costs
+  data: costs,
+
+  getMinId:function(){
+    var minId=0;
+    this.each(function(rec){
+      minId = parseInt(rec.get('id'))<minId ? parseInt(rec.get('id')) : minId 
+    });
+    return minId
+  }
 
 });

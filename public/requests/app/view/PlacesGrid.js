@@ -38,14 +38,39 @@ Ext.define('Rq.view.PlacesGrid', {
 
   initComponent: function(){
     this.listeners = {
-      itemcontextmenu: this.showContextMenu
+      itemcontextmenu: this.showContextMenu,
+      containercontextmenu: this.showContainerContextMenu
     };
     this.callParent();
 
   },
 
+  showContainerContextMenu: function(view, e){
+    var grid = Ext.ComponentQuery.query('placesgrid')[0];
+    var addCountryAction = { text:'Добавить страну', iconCls:'add', menu:{ items:[ ] }};
+
+    var menu = Ext.create('Ext.menu.Menu', { items: [] });
+    
+    var countriesStore = Ext.create('Rq.store.Countries', {});
+    countriesStore.each(function(c){
+      var existInPlaces = grid.getStore().findBy(function(r,id ){
+        return r.get('country_id').toString()==c.get('id').toString()
+      });
+
+      if(existInPlaces==-1) {
+        addCountryAction.menu.items.push({text:c.get('name'), handler:function(){
+          var rs = grid.getStore().add({id:grid.getStore().getMinId()-1, expeditor_name:'', exp_id:0, country_name:c.get('name'), country_id:c.get('id')})[0];
+          Rq.view.CarsGrid.addPlaceToStore(rs);
+          Rq.view.CarsGrid.addColumn(rs);
+          Ext.ComponentQuery.query('carsgrid')[0].getView().refresh();
+        }})
+      }
+    })
+    menu.add(addCountryAction);
+    menu.showAt(e.getXY())
+  },// EO showContainerContextMenu
+
   showContextMenu: function(view, rec, item, index, e){
-    e.stopEvent();
     var grid = Ext.ComponentQuery.query('placesgrid')[0];
     var rec = grid.getSelectionModel().getSelection()[0];
 
@@ -85,6 +110,6 @@ Ext.define('Rq.view.PlacesGrid', {
     menu.add(deleteAction);
 
     menu.showAt(e.getXY())
-  }
+  }, //EO showContextMenu
 
 })
