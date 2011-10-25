@@ -8,6 +8,9 @@ class CreateCars < ActiveRecord::Migration
       t.float   :weight,  :default=>0.0
       t.date    :shipping_date, :null=>true
       t.string  :waybill, :default=>""
+      t.float   :rate_jd_real, :null=>false, :default=>0.0
+      t.float   :rate_jd,      :null=>false, :default=>0.0
+      t.float   :rate_client,  :null=>false, :default=>0.0
     end
   end
 

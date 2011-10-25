@@ -41,11 +41,23 @@ class ClientsController < ApplicationController
     }
   end
 
+  def autocomplete
+    conditions = "name LIKE('%#{params[:query]}%')"
+    stations = Client.find(:all, 
+      :conditions=>conditions,
+      :order=>"id DESC", 
+      :offset=>params[:start].to_i, 
+      :limit=>params[:limit].to_i
+    )
+    total = Client.count(:conditions=>conditions)
+    render :json => {:success=>true, :total=>total, :nodes=>stations.as_json(:only=>[:id, :name])}
+  end
+
   def index
-    conditions = params[:only_exp].eql?('true') ? "is_expeditor=true" : ""
+    conditions = params[:only_exp].eql?('true') ? "is_expeditor=true " : " 1=1 "
     
     # Проверка доступности инженерам
-    conditions << "id IN(SELECT client_id FROM client_users WHERE user_id=#{current_user.id})" if current_user.is_engineer?
+    conditions << "AND id IN(SELECT client_id FROM client_users WHERE user_id=#{current_user.id})" if current_user.is_engineer?
 
     @clients = Client.all( 
       :conditions=>conditions,

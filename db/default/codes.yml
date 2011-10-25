@@ -5,8 +5,14 @@
   car_id: 1
   place_id: 1
   number: "000000000"
+  rate_jd_real: 8
+  rate_jd: 10
+  rate_client: 15
 1:
   id: 2
   car_id: 2
   place_id: 1
   number: "000000001"
+  rate_jd_real: 8
+  rate_jd: 10
+  rate_client: 15

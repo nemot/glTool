@@ -1,5 +1,6 @@
 Ext.define('Rq.view.Viewport', {
     extend: 'Ext.container.Viewport',
+    alias : 'widget.requestviewport',
     requires: [
       'Rq.view.Autocomplete',
       'Rq.view.RequestGrid',
@@ -10,6 +11,11 @@ Ext.define('Rq.view.Viewport', {
     id: 'viewport',
     layout: 'border',
     defaults:{border:false},
+    listeners: {
+      afterrender:function(vp){
+        Rq.controller.Requests.calculateRequest()
+      }
+    },
 
 
     initComponent: function() {
@@ -29,10 +35,11 @@ Ext.define('Rq.view.Viewport', {
           {xtype:'button', text:'Закрыть', height:40, padding:'0 10 0 10', handler:function(){window.close()}},
           {flex:1, xtype:'label'},
           
-          {xtype:'button', iconCls:'save', text:'Сохранить', height:40, padding:'0 10 0 10'}
+          {xtype:'button', iconCls:'save', text:'Сохранить', height:40, padding:'0 10 0 10', id:'saveRequestBtn'}
         ]}
         
       ];
+
       
       this.callParent(arguments);
     }

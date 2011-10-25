@@ -2,7 +2,7 @@ Ext.define('Rq.view.RequestGrid', {
   extend: 'Ext.grid.property.Grid',
   alias : 'widget.requestgrid',
   rec: null,
-  title:'Заявка',
+  title:'Заявка  ',
   columnLines:true, hideHeaders:true, 
   nameField: 'name',
   valueField: 'value',
@@ -45,27 +45,29 @@ Ext.define('Rq.view.RequestGrid', {
   customEditors: {
 
     m_rate_for_car: Ext.create('Ext.form.field.ComboBox', {
-      store:[[true, 'Вагон'], [false, 'Тонну']], queryMode:'local', editable:false
+      store:[[true, 'Вагон'], [false, 'Тонну']], queryMode:'local', editable:false,
     }),
     
     b_station_from_id: Ext.create('Rq.view.Autocomplete', {pr_url:'/stations', pr_name:'station_from_name', pr_id:"station_from_id"}),
     c_station_to_id: Ext.create('Rq.view.Autocomplete', {pr_url:'/stations', pr_name:'station_to_name', pr_id:"station_to_id"}),
     d_load_id: Ext.create('Rq.view.Autocomplete', {pr_url:'/loads', pr_name:'load_name', pr_id:"load_id"}),
     
+    a_client_id: Ext.create('Rq.view.Autocomplete', {pr_url:'/clients/autocomplete', pr_name:'client_name', pr_id:"client_id"}),
+    
     // Выбор клиента
-    a_client_id: Ext.create('Ext.form.field.ComboBox', {
-      queryMode: 'local', displayField: 'name', valueField: 'id', editable:false,
-      store: new Ext.data.Store({ autoLoad:true,
-        fields: [ {name:'id', type:'int'}, {name:'name',  type:'string'}],
-        proxy: { type: 'rest', url : '/clients', reader: {type:'json', root:'clients'} },
-      }),
-      listeners:{
-        select:function(field, val){ 
-          Ext.ComponentQuery.query('requestgrid')[0].rec.set('client_name',val[0].get('name'))
-          Ext.ComponentQuery.query('requestgrid')[0].rec.set('client_id',val[0].get('id'))
-        }
-      }
-    }),
+//    a_client_id: Ext.create('Ext.form.field.ComboBox', {
+//      queryMode: 'local', displayField: 'name', valueField: 'id', editable:true,
+//      store: new Ext.data.Store({ autoLoad:true,
+//        fields: [ {name:'id', type:'int'}, {name:'name',  type:'string'}],
+//        proxy: { type: 'rest', url : '/clients', reader: {type:'json', root:'clients'} },
+//      }),
+//      listeners:{
+//        select:function(field, val){ 
+//          Ext.ComponentQuery.query('requestgrid')[0].rec.set('client_name',val[0].get('name'))
+//          Ext.ComponentQuery.query('requestgrid')[0].rec.set('client_id',val[0].get('id'))
+//        }
+//      }
+//    }),
 
     // Рода подвижного состава
     i_car_type_id: Ext.create('Ext.form.field.ComboBox', {
@@ -98,9 +100,10 @@ Ext.define('Rq.view.RequestGrid', {
   initComponent: function(params){
 
     this.source = this.rec.getProperties();
-    this.on('propertychange',this.dataChanged)
-    this.on('beforeedit', this.disableEditingForFields)
-
+    this.on('propertychange',this.dataChanged);
+    this.on('beforeedit', this.disableEditingForFields);
+    this.title +=' №'+this.rec.get('id')+'&nbsp;&nbsp;&nbsp;';
+    this.title += '<a href="javascript:Rq.controller.Requests.showDocsWindow()" class="a-right" style="display:none;">Документы</a>';
     this.callParent();
     
   },
@@ -108,7 +111,11 @@ Ext.define('Rq.view.RequestGrid', {
 
   dataChanged: function(source, recordId, value, oldValue, options){
     // Запись в модельку
-    
+    current_request.setFromProperties(source)
+    // И пересчитываем заявку
+    if(Ext.ComponentQuery.query('requestgrid')[0] && Ext.ComponentQuery.query('costsgrid')[0]) {
+      Rq.controller.Requests.calculateRequest()
+    }
   }
 });
 

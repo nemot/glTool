@@ -24,6 +24,9 @@ Gl2::Application.routes.draw do
     member do
       get 'users'
     end
+    collection do
+      get 'autocomplete'
+    end
   end
   put "clients/:id/users/:user_id" => "clients#update_permission"
   resources :client_transactions

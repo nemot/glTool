@@ -7,7 +7,12 @@ Ext.define('Rq.view.CostsGrid', {
   columnLines:true,
 
   selType: 'rowmodel',
-  plugins: [ Ext.create('Ext.grid.plugin.CellEditing', { clicksToEdit: 1 }) ],
+  plugins: [ Ext.create('Ext.grid.plugin.CellEditing', { clicksToEdit: 1 , listeners:{
+    edit: function(){
+      // Пересчитываем заявку
+      Rq.controller.Requests.calculateRequest()
+    }
+  }}) ],
 
   // Колонки
   columns:[
@@ -20,22 +25,21 @@ Ext.define('Rq.view.CostsGrid', {
       }}
     }, renderer:function(v, a, rec){
         return rec.get('country_name')
-//      return Ext.ComponentQuery.query('placesgrid')[0].getStore().getById(v).get('country_name');
     }},
 
-    {header: 'Наименование', dataIndex:'name', flex:1, menuDisabled:true, field:{xtype:'textfield'}},
+    {header: 'Наименование', dataIndex:'name', flex:1, menuDisabled:true, field:{xtype:'textfield', selectOnFocus:true}},
 
     {header: 'ЖД', dataIndex:'rate_jd', menuDisabled:true, renderer:function(v){
       return v.toFixed(2).toString().replace("\.", ',')
-    }, field:{xtype:'numberfield', hideTrigger: true, decimalSeparator:','}},
+    }, field:{xtype:'numberfield', hideTrigger: true, decimalSeparator:',', selectOnFocus:true}},
 
     {header: 'Клиенту', dataIndex:'rate_client', menuDisabled:true, renderer:function(v){
       return v.toFixed(2).toString().replace("\.", ',')
-    }, field:{xtype:'numberfield', hideTrigger: true, decimalSeparator:','}},
+    }, field:{xtype:'numberfield', hideTrigger: true, decimalSeparator:',', selectOnFocus:true}},
 
     {header: 'Вид оплаты', dataIndex:'payment_type', menuDisabled:true, renderer:function(v){
-      return ["Вагон", "Тоннаж", "Разовый"][parseInt(v)]
-    }, field:{xtype:'combo',queryMode: 'local', editable:false, store:[[0, 'Вагон'], [1, 'Тоннаж'],[2, 'Разовый']]}}
+      return ["Разовый", "За вагон", "За тонну"][parseInt(v)]
+    }, field:{xtype:'combo',queryMode: 'local', editable:false, store:[[0, 'Разовый'], [1, 'За вагон'],[2, 'За тонну']]}}
   ],
 
   initComponent: function(){

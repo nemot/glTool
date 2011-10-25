@@ -7,21 +7,21 @@
   ];
 
   var current_request = {
-    id: <%= @request.id %>,
-    client_id: <%= @request.client_id %>, 
-    client_name: "<%= @request.client_name %>", 
-    station_from_id: <%= @request.station_from_id %>, 
-    station_from_name: "<%= @request.station_from_name %>", 
-    station_to_id: <%= @request.station_to_id %>, 
-    station_to_name: "<%= @request.station_to_name %>", 
+    id: -1,
+    client_id: 0, 
+    client_name: "", 
+    station_from_id: 0, 
+    station_from_name: "", 
+    station_to_id: 0, 
+    station_to_name: "", 
     load_id: <%= @request.load_id %>,
     load_name: "<%= @request.load_name %>", 
     date_of_issue: "<%= @request.date_of_issue %>", 
     valid_until: "<%= @request.valid_until%>", 
     type_of_transportation: "<%= @request.type_of_transportation %>", 
     ownership: "<%= @request.ownership %>", 
-    car_type_id: <%= @request.car_type_id %>, 
-    car_type_name: "<%= @request.car_type_name %>", 
+    car_type_id: 0, 
+    car_type_name: "", 
     sender: "<%= @request.sender %>", 
     receiver: "<%= @request.receiver %>", 
     gu12: "<%= @request.gu12 %>", 
@@ -31,7 +31,7 @@
     jd_sum: <%= @request.jd_sum %>, 
     cars_num: <%= @request.cars_num %>, 
     common_tonnage: <%= @request.common_tonnage %>, 
-    created_user_id: <%= @request.created_user_id %>
+    created_user_id: <%= current_user.id %>
   };
 
   var countries = [
@@ -42,13 +42,13 @@
 
   var places = [
   <% @request.places.each do |p| -%>
-    <%= p.to_json(:methods=>[:expeditor_name, :country_name]).html_safe %>,
+    <%= p.to_json(:methods=>[:expeditor_name, :country_name]).html_safe %>
   <% end -%>
   ];
 
   var costs = [
   <% @request.costs.each do |c| -%>
-    <%= c.to_json(:methods=>[:country_name]).html_safe %>,
+    <%= c.to_json(:methods=>[:country_name]).html_safe %>
   <% end -%>
   ];
 

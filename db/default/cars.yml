@@ -3,6 +3,14 @@
 1:
   id: 1
   request_id: 1
+  tonnage: 60
+  rate_jd_real: 8
+  rate_jd: 10
+  rate_client: 15
 2:
   id: 2
   request_id: 1
+  tonnage: 80
+  rate_jd_real: 8
+  rate_jd: 10
+  rate_client: 15

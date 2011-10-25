@@ -6,9 +6,10 @@ class Request < ActiveRecord::Base
   belongs_to :load
   belongs_to :car_type
   belongs_to :user
-  has_many :cars
-  has_many :places
+  has_many :cars, :order=>"id DESC", :dependent => :destroy
+  has_many :places, :dependent => :destroy
   has_many :costs, :through=>:places
+  has_many :documents, :dependent => :destroy
 
 
   def client_name

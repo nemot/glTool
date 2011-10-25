@@ -10,12 +10,142 @@ Ext.define('Rq.controller.Requests', {
     this.control({
       "#addCodesMenuItem": {click:this.showAddCodesWindow},
       "#addCodesSubmitBtn": {click:this.addCodesToGrid},
+      "#fromField": {specialkey:function(f,e){if(e.getKey() == e.ENTER){this.addCodesToGrid()}}},
       "#toField": {specialkey:function(f,e){if(e.getKey() == e.ENTER){this.addCodesToGrid()}}},
       "#deleteCarsMenuItem": {click:this.deleteCars},
-      "#addCostsMenuItem": {click:this.addCosts}
+      "#addCostsMenuItem": {click:this.addCosts},
+      "#docsLink": {click:this.showDocsWindow},
 //      "requestsgrid":{itemdblclick: this.showRequestWindow},
+      "#saveRequestBtn": {click: this.saveRequest}
     })
 
+  },
+
+
+  saveRequest: function(){
+    // Getting needed data
+    var lmask = new Ext.LoadMask(Ext.ComponentQuery.query('requestviewport')[0], {msg:" Сохраняем..."});
+    var carRecords = []; var placeRecords = []; var costRecords = [];
+    Ext.ComponentQuery.query('carsgrid')[0].getStore().each(function(rec){ 
+      carRecords.push(Ext.encode(rec.data)) 
+    })    
+    Ext.ComponentQuery.query('placesgrid')[0].getStore().each(function(rec){ 
+      placeRecords.push(Ext.encode(rec.data)) 
+    })
+    Ext.ComponentQuery.query('costsgrid')[0].getStore().each(function(rec){ 
+      costRecords.push(Ext.encode(rec.data)) 
+    })
+
+    lmask.show();
+    // Sending it to server
+    Ext.Ajax.request({
+      url: '/requests/',
+      params: {
+        request: Ext.encode(current_request.data),
+        cars: Ext.encode(carRecords), 
+        places: Ext.encode(placeRecords), 
+        costs: Ext.encode(costRecords)
+      },
+      success: function(response){
+        var obj = Ext.decode(response.responseText);
+        lmask.hide();
+//        console.dir(obj);
+      }, 
+      failure: function(response){
+        lmask.hide();
+        Ext.example.msg('Ошибка на сервере!', 'Произошла ошибка на сервере. Было послано письмо администратору с описанием проблемы.');
+//        console.log('server-side failure with status code ' + response.status);
+      }
+    });
+
+  },
+  
+
+
+  statics: {
+    // Отображает окошко с документами
+    showDocsWindow: function(){
+      var win = Ext.create('Ext.window.Window',{
+        id:'docsWindow',
+        title:'Документы',
+        closable:true, width:500, height:400, modal:true, layout:'fit',
+        items:[ { autoScroll: true, style:'background:white !important;',
+            xtype: 'dataview',
+            store: 'Cars',
+            tpl: Ext.create('Ext.XTemplate',
+              '<tpl for=".">',
+              '<div class="document-item">',
+                  '<h3><a href="#" target="_blank">{tonnage}</a></h3>',
+                  '<p>{codes}</p>',
+              '</div></tpl>',
+              { formatDate: function(value){ return Ext.Date.format(value, 'M j, Y'); }
+            }),
+            itemSelector: 'div.document-item'
+          }
+        ],
+        buttons:[
+          {text:'Ок', handler:function(){ win.close() }},
+        ]
+      });
+      win.show();
+    },
+
+    // Пересчитывает заявку
+    calculateRequest: function() { 
+      var requestGrid = Ext.ComponentQuery.query('requestgrid')[0];
+      var carsGrid = Ext.ComponentQuery.query('carsgrid')[0];
+      var costsGrid = Ext.ComponentQuery.query('costsgrid')[0];
+
+      // Считаем кол-во вагонов и общий тонаж
+      var cars_num = 0;
+      var common_tonnage = 0;
+      var jd_sum = 0;
+      var client_sum = 0;
+
+      carsGrid.getStore().each(function(car){ 
+        if(car.get('in_use')){  // Все, кроме возврата
+          cars_num+=1; 
+          common_tonnage += parseInt(car.get('tonnage'));
+
+          // Считаем ставки
+          if(current_request.get("rate_for_car")){ // Если ствка за вагон
+            client_sum = client_sum - 0 + car.get('rate_client')
+            jd_sum = jd_sum - 0 + car.get('rate_jd')
+          } else { // Если ставка за тонну
+            client_sum = client_sum - 0 + (car.get('rate_client')*car.get('tonnage'))
+            jd_sum = jd_sum  - 0 + (car.get('rate_jd')*car.get('tonnage'))
+          }
+        }
+      })
+      
+      // Считаем накладные расходы
+      costsGrid.getStore().each(function(cost){ 
+        switch(cost.get('payment_type')) {
+          case 0: // Разовый
+            client_sum = client_sum - 0 + cost.get('rate_client')*1;
+            jd_sum = jd_sum - 0 + cost.get('rate_jd')*1;
+            break;
+          case 1: // За вагон
+            client_sum = client_sum - 0 + cost.get('rate_client')*cars_num;
+            jd_sum = jd_sum - 0 + cost.get('rate_jd')*cars_num;
+            break;
+          case 2: // За тонну
+            client_sum = client_sum - 0 + cost.get('rate_client')*common_tonnage;
+            jd_sum = jd_sum - 0 + cost.get('rate_jd')*common_tonnage;
+            break;
+        }
+      })
+
+      // Пишем это все в модельку заявки
+      current_request.set('cars_num',cars_num);
+      current_request.set('common_tonnage',common_tonnage);
+      current_request.set('jd_sum',jd_sum);
+      current_request.set('client_sum',client_sum);
+
+      // Даем новый сурс для RequestGrid
+      requestGrid.setSource(current_request.getProperties())
+      
+    }
   },
 
   // Добавляет доп сборы
@@ -39,14 +169,15 @@ Ext.define('Rq.controller.Requests', {
     var form = Ext.ComponentQuery.query('#addCodesForm')[0].getForm()
     var carsStore = Ext.ComponentQuery.query('carsgrid')[0].getStore();
     var placesStore = Ext.ComponentQuery.query('placesgrid')[0].getStore();
+
     // Проверяем форму на пустые значения
     if(form.isValid()){
       var values = form.getValues()
-      if(values['from']>values['to']){ // Проверям на правильность введения
+      if(values['from']>values['to'] && values['to']>0){ // Проверям на правильность введения
         Ext.example.msg('Ошибка пользователя.', 'Код "С" должен быть больше чем код "По"');
       } else { // Ну и собственно добавляем сами коды если все нормально
         var fromCode = parseInt(values['from']);
-        var toCode = parseInt(values['to']);
+        var toCode = values['to']=="" ? fromCode : parseInt(values['to']);
         // Сначала в пустые коды существующих вагонов
         carsStore.each(function(car){
           Ext.each(car.get('codes'), function(code){
@@ -78,6 +209,7 @@ Ext.define('Rq.controller.Requests', {
         if(cars.length>0){carsStore.add(cars)};
         // В добавок обновляем отображение таблички вагонов
         Ext.ComponentQuery.query('carsgrid')[0].getView().refresh();
+
         // А уж потом закрываем окошко
         Ext.ComponentQuery.query('#addCodesWindow')[0].close()
       }
@@ -96,13 +228,13 @@ Ext.define('Rq.controller.Requests', {
         closable:true, width:300, height:170, modal:true, layout:'fit',
         items:[
           {xtype:'form', frame:true, id:'addCodesForm', items:[
-              {fieldLabel:'С', name:'from', id:'fromField'},
-              {fieldLabel:'По', name:'to', id:'toField'},
-              {fieldLabel:'Страна', name:'place_id',
+              {fieldLabel:'Страна', name:'place_id', id:"codesPlaceIdField",
                 xtype:'combo', queryMode: 'local', displayField: 'country_name', valueField: 'id', editable:false,
                 store: placesStore, hideTrigger:false,
                 value: countryFieldValue
-              }
+              },
+              {fieldLabel:'С', name:'from', id:'fromField'},
+              {fieldLabel:'По', name:'to', id:'toField', allowBlank:true, emptyText:'Можно не указывать...'}
             ], 
             defaults:{labelWidth:50, anchor:'95%', hideTrigger:true, xtype:'numberfield', allowBlank:false}
           }
@@ -111,7 +243,14 @@ Ext.define('Rq.controller.Requests', {
           {text:'Отмена', handler:function(){ win.close() }},
           {text:'Добавить', iconCls:'add', id:'addCodesSubmitBtn'}
         ],
-        listeners:{ afterrender:function(){ Ext.getCmp('fromField').focus() } }// Фокус на первое поле ввода 
+        listeners:{ afterrender:function(){ 
+          if(!countryFieldValue) {
+            Ext.getCmp('codesPlaceIdField').focus() 
+          } else {
+            Ext.getCmp('fromField').focus()
+          }
+          
+        } }// Фокус на первое поле ввода
       });
       win.show();
     } else { // Если плейсы пусты показываем алерт

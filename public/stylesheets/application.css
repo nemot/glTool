@@ -22,4 +22,23 @@
 .pred {color:red; cursor:pointer;}
 .pgreen {color:green; cursor:pointer; font-weight:bold;}
 
-.bold{font-weight:bold}
+.bold{font-weight:bold !important;}
+.border-right { border-right:1px solid #666666 !important; }
+.backgrouned { background-color:#CCCCCC !important; }
+.x-column-header { text-align:center !important; }
+
+a.a-right {
+    color: #333333;
+    font-weight: normal;
+    margin-left: 100px !important;
+    margin:0px !important;
+    padding: 0px !important;
+}
+
+div.document-item { margin:5px 15px 0 15px; }
+div.document-item:hover{  }
+div.document-item a {
+    color: #666666;
+    text-decoration:underline;
+    font-weight: normal;
+}

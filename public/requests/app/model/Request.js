@@ -23,6 +23,25 @@ Ext.define('Rq.model.Request', {
     }
   },
 
+  setFromProperties: function(p){
+    this.beginEdit();
+    this.set('client_id', p.a_client_id)
+    this.set('station_from_id',p.b_station_from_id)
+    this.set('station_to_id',p.c_station_to_id)
+    this.set('load_id',p.d_load_id)
+    this.set('date_of_issue',p.e_date_of_issue)
+    this.set('valid_until',p.f_valid_until)
+    this.set('type_of_transportation',p.g_type_of_transportation)
+    this.set('ownership',p.h_ownership)
+    this.set('car_type_id',p.i_car_type_id)
+    this.set('sender',p.j_sender)
+    this.set('receiver',p.k_receiver)
+    this.set('gu12',p.l_gu12)
+    this.set('rate_for_car',p.m_rate_for_car)
+    this.endEdit();
+    
+  },
+
   fields: [
     {name:'id', type:'id'},
     {name:'client_id', type:'int'}, 

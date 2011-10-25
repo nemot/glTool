@@ -32,7 +32,7 @@ Ext.define('Rq.view.Autocomplete',{
         grid =  Ext.ComponentQuery.query('requestgrid')[0];
         grid.rec.set(this.config.pr_id,val[0].get('id'));
         grid.rec.set(this.config.pr_name,val[0].get('name'));
-        grid.fireEvent('propertychange');
+//        grid.fireEvent('propertychange');
       }
     };
 

@@ -17,12 +17,25 @@ Ext.define('Rq.store.Places', {
     return minId
   },
 
+  
   listeners: {
+    add: function(){ 
+      if(Ext.ComponentQuery.query('requestgrid')[0] && Ext.ComponentQuery.query('costsgrid')[0]) {
+        Rq.controller.Requests.calculateRequest()
+      }
+    },
     remove: function(store, record, index){
       Rq.view.CarsGrid.removeColumn(record)
-//      Rq.view.CarsGrid.removePlaceFromStore(record)
+      Rq.view.CarsGrid.removePlaceFromStore(record)
+      Ext.ComponentQuery.query('carsgrid')[0].getStore().each(function(rec){
+        Rq.view.CarsGrid.recalcRates(rec);
+      });      
+
+      if(Ext.ComponentQuery.query('requestgrid')[0] && Ext.ComponentQuery.query('costsgrid')[0]) {
+        Rq.controller.Requests.calculateRequest()
+      }
     }
-  },
+  }
 
 
 });

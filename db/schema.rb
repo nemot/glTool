@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 19) do
+ActiveRecord::Schema.define(:version => 20) do
 
   create_table "car_types", :force => true do |t|
     t.string "name", :null => false
@@ -24,6 +24,9 @@ ActiveRecord::Schema.define(:version => 19) do
     t.float   "weight",        :default => 0.0
     t.date    "shipping_date"
     t.string  "waybill",       :default => ""
+    t.float   "rate_jd_real",  :default => 0.0,  :null => false
+    t.float   "rate_jd",       :default => 0.0,  :null => false
+    t.float   "rate_client",   :default => 0.0,  :null => false
   end
 
   create_table "client_users", :force => true do |t|
@@ -68,6 +71,13 @@ ActiveRecord::Schema.define(:version => 19) do
     t.string "short_name", :default => "", :null => false
   end
 
+  create_table "documents", :force => true do |t|
+    t.integer  "request_id",                              :null => false
+    t.date     "date_of_issue", :default => '2011-10-25', :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "loads", :force => true do |t|
     t.string "name"
     t.string "gng"
@@ -81,24 +91,24 @@ ActiveRecord::Schema.define(:version => 19) do
   end
 
   create_table "requests", :force => true do |t|
-    t.integer  "client_id",                                        :null => false
-    t.integer  "station_from_id",                                  :null => false
-    t.integer  "station_to_id",                                    :null => false
-    t.integer  "load_id",                                          :null => false
-    t.date     "date_of_issue",          :default => '2011-08-23', :null => false
-    t.date     "valid_until",            :default => '2011-08-31', :null => false
-    t.string   "type_of_transportation", :default => "",           :null => false
-    t.string   "ownership",              :default => "МПС",     :null => false
-    t.integer  "car_type_id",                                      :null => false
-    t.string   "sender",                 :default => "",           :null => false
-    t.string   "receiver",               :default => "",           :null => false
-    t.string   "gu12",                   :default => "",           :null => false
-    t.boolean  "rate_for_car",           :default => true,         :null => false
-    t.float    "client_sum",             :default => 0.0,          :null => false
-    t.float    "jd_sum",                 :default => 0.0,          :null => false
-    t.integer  "cars_num",               :default => 0,            :null => false
-    t.integer  "common_tonnage",         :default => 0,            :null => false
-    t.integer  "created_user_id",                                  :null => false
+    t.integer  "client_id",                                                  :null => false
+    t.integer  "station_from_id",                                            :null => false
+    t.integer  "station_to_id",                                              :null => false
+    t.integer  "load_id",                :default => 1,                      :null => false
+    t.date     "date_of_issue",          :default => '2011-10-25',           :null => false
+    t.date     "valid_until",            :default => '2011-10-31',           :null => false
+    t.string   "type_of_transportation", :default => "Повагонная", :null => false
+    t.string   "ownership",              :default => "СПС",               :null => false
+    t.integer  "car_type_id",                                                :null => false
+    t.string   "sender",                 :default => "",                     :null => false
+    t.string   "receiver",               :default => "",                     :null => false
+    t.string   "gu12",                   :default => "",                     :null => false
+    t.boolean  "rate_for_car",           :default => true,                   :null => false
+    t.float    "client_sum",             :default => 0.0,                    :null => false
+    t.float    "jd_sum",                 :default => 0.0,                    :null => false
+    t.integer  "cars_num",               :default => 0,                      :null => false
+    t.integer  "common_tonnage",         :default => 0,                      :null => false
+    t.integer  "created_user_id",                                            :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -122,7 +132,7 @@ ActiveRecord::Schema.define(:version => 19) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "client_id",        :default => 1
-    t.datetime "date_of_transfer", :default => '2011-08-23 08:21:31'
+    t.datetime "date_of_transfer", :default => '2011-10-25 08:41:38'
   end
 
   create_table "user_actions", :force => true do |t|

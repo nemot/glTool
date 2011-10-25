@@ -6,5 +6,7 @@
   station_from_id: 100
   station_to_id: 199
   load_id: 500
+  ownership: "СПС"
   car_type_id: 16
   created_user_id: 1
+  rate_for_car: false
