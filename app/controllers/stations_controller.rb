@@ -5,7 +5,7 @@ class StationsController < ApplicationController
     conditions = "name LIKE('%#{params[:query]}%') OR short_name LIKE('%#{params[:query]}%') OR code LIKE('%#{params[:query]}%')"
     stations = Station.find(:all, 
       :conditions=>conditions,
-      :order=>"id DESC", 
+      :order=>"id ASC", 
       :offset=>params[:start].to_i, 
       :limit=>params[:limit].to_i
     )

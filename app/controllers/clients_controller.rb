@@ -20,6 +20,13 @@ class ClientsController < ApplicationController
     }
   end
 
+  def expeditor_in_requests
+    client = Client.find_by_id(params[:id])
+    request_ids = client.nil? ? [] : client.expeditor_in_requests(current_user)
+    unavailable = client.nil? ? false : client.expeditor_in_unavailable_requests?(current_user)
+    render :json=>{:success=>true, :requests=>request_ids.as_json, :unavailable=>unavailable}
+  end
+
   def update_permission
     # Логируем
     client = Client.find_by_id(params[:id])
@@ -43,6 +50,7 @@ class ClientsController < ApplicationController
 
   def autocomplete
     conditions = "name LIKE('%#{params[:query]}%')"
+    conditions << " AND id IN(#{current_user.client_ids})" if current_user.is_engineer?
     stations = Client.find(:all, 
       :conditions=>conditions,
       :order=>"id DESC", 
@@ -55,7 +63,6 @@ class ClientsController < ApplicationController
 
   def index
     conditions = params[:only_exp].eql?('true') ? "is_expeditor=true " : " 1=1 "
-    
     # Проверка доступности инженерам
     conditions << "AND id IN(SELECT client_id FROM client_users WHERE user_id=#{current_user.id})" if current_user.is_engineer?
 
@@ -77,6 +84,7 @@ class ClientsController < ApplicationController
   def update
     # Удаляем нахрен все ненужное из парамсов    
     params[:clients].reject!{|k,v| ['balance', 'id', 'created_at'].include?(k)}
+    
     client = Client.update(params[:id], params[:clients])
     current_user.log('client.update', client.name, client.to_json) if client.errors.empty?
     render :json => {
@@ -99,7 +107,9 @@ class ClientsController < ApplicationController
 
   def destroy
     client = Client.find_by_id(params[:id])
-    current_user.log('client.remove', client.name, client.to_json)
+    requests_string = client.requests.empty? ? '' : " и #{client.requests.length} заявок от него";
+    current_user.log('client.remove', client.name.to_s+requests_string, client.to_json)
+    client.requests.delete_all
     deleted_records_num = Client.delete(params[:id])
     @clients = Client.all( 
       :order=>"created_at DESC", 
@@ -118,12 +128,14 @@ class ClientsController < ApplicationController
   private 
   
   def engineer_has_access
-    client = Client.find_by_id(params[:id])
-    if client.nil? or !client.users.exists?(current_user)
-      redirect_to root_path
-      return true
+    if current_user.is_engineer?
+      client = Client.find_by_id(params[:id])
+      if client.nil? or !client.users.exists?(current_user)
+        redirect_to root_path
+        return true
+      end
     end
-    return true
+    true
   end
 
 end

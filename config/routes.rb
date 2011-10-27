@@ -23,6 +23,7 @@ Gl2::Application.routes.draw do
   resources :clients do
     member do
       get 'users'
+      get 'expeditor_in_requests'
     end
     collection do
       get 'autocomplete'

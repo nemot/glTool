@@ -93,6 +93,7 @@ Ext.define('Gl.controller.Users', {
     submitCreateForm:function(){
       var form = Ext.getCmp("userCreateForm").getForm();
       var vals = form.getValues();
+      Ext.ComponentQuery.query('userwindow')[0].setLoading('Сохраняем')
       form.submit({
         url:'/users',
         method:"POST",
@@ -100,9 +101,11 @@ Ext.define('Gl.controller.Users', {
         success:function(frm,action){
           Ext.example.msg('', 'Пользователь был успешно создан');
           Ext.ComponentQuery.query('usersgrid')[0].getStore().load();
+          Ext.ComponentQuery.query('userwindow')[0].setLoading(false)
           Ext.ComponentQuery.query('userwindow')[0].close();
         },
         failure:function(frm, action){
+          Ext.ComponentQuery.query('userwindow')[0].setLoading(false)
           switch (action.failureType) {
             case Ext.form.action.Action.CLIENT_INVALID:
                 Ext.example.msg('Ошибка пользователя!', 'Проверьрьте правильности заполненой формы');

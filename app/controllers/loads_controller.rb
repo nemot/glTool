@@ -5,7 +5,7 @@ class LoadsController < ApplicationController
     conditions = "name LIKE('%#{params[:query]}%') OR gng LIKE('%#{params[:query]}%') "
     nodes = Load.find(:all, 
       :conditions=>conditions,
-      :order=>"id DESC", 
+      :order=>"id ASC", 
       :offset=>params[:start].to_i, 
       :limit=>params[:limit].to_i
     )

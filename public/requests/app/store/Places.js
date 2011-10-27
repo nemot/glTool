@@ -5,7 +5,7 @@ Ext.define('Rq.store.Places', {
   model:'Rq.model.Place',
 
   autoLoad:true, 
-  sorters: [{property : 'id', direction: 'DESC'}],
+  sorters: [{property : 'id', direction: 'ASC'}],
   data: places,
 
 

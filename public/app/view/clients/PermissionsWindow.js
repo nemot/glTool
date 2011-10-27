@@ -62,7 +62,7 @@ Ext.define('Gl.view.clients.PermissionsWindow', {
             if(rec.get('role_id')==4) {
               rec.set('has_access_to_client?', !rec.get('has_access_to_client?'))
             } else {
-              Ext.example.msg('', 'Изменить права доступа можно только инженеру.');
+              Ext.example.msg('', 'Изменить права доступа можно только для инженера.');
             }
             
           }

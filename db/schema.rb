@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20) do
+ActiveRecord::Schema.define(:version => 21) do
 
   create_table "car_types", :force => true do |t|
     t.string "name", :null => false
@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(:version => 20) do
 
   create_table "documents", :force => true do |t|
     t.integer  "request_id",                              :null => false
-    t.date     "date_of_issue", :default => '2011-10-25', :null => false
+    t.date     "date_of_issue", :default => '2011-10-27', :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(:version => 20) do
     t.integer  "station_from_id",                                            :null => false
     t.integer  "station_to_id",                                              :null => false
     t.integer  "load_id",                :default => 1,                      :null => false
-    t.date     "date_of_issue",          :default => '2011-10-25',           :null => false
+    t.date     "date_of_issue",          :default => '2011-10-27',           :null => false
     t.date     "valid_until",            :default => '2011-10-31',           :null => false
     t.string   "type_of_transportation", :default => "Повагонная", :null => false
     t.string   "ownership",              :default => "СПС",               :null => false
@@ -132,7 +132,14 @@ ActiveRecord::Schema.define(:version => 20) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "client_id",        :default => 1
-    t.datetime "date_of_transfer", :default => '2011-10-25 08:41:38'
+    t.datetime "date_of_transfer", :default => '2011-10-27 09:45:48'
+  end
+
+  create_table "transit_stations", :force => true do |t|
+    t.integer  "request_id"
+    t.integer  "station_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "user_actions", :force => true do |t|

@@ -21,8 +21,8 @@ Ext.define('Rq.view.RequestGrid', {
     k_receiver: "Получатель",
     l_gu12: "ГУ-12",
     m_rate_for_car: "Ставка за",
-    p_cars_num: "<span class='bold'>Кол-во вагонов</span>",
-    q_common_tonnage: "<span class='bold'>Суммарн. тоннаж</span>",
+    p_cars_num: "<span class='bold'>К-во ВАГ.</span>",
+    q_common_tonnage: "<span class='bold'>Сум.ТНЖ</span>",
     n_client_sum: "<span class='bold'>Сумма КЛ.</span>",
     o_jd_sum:"<span class='bold'>Сумма ЖД.</span>"
   },
@@ -34,8 +34,8 @@ Ext.define('Rq.view.RequestGrid', {
     c_station_to_id: function(v){ return this.up().rec.get('station_to_name')},
     d_load_id: function(v){ return this.up().rec.get('load_name')},
     m_rate_for_car: function(v){ return v ? 'Вагон' : 'Тонну'},
-    n_client_sum: function(v) {return "<span class='bold'>"+v+"</span>"},
-    o_jd_sum: function(v) {return "<span class='bold'>"+v+"</span>"},
+    n_client_sum: function(v) {return "<span class='bold'>"+Ext.util.Format.usMoney(v)+"</span>"},
+    o_jd_sum: function(v) {return "<span class='bold'>"+Ext.util.Format.usMoney(v)+"</span>"},
     p_cars_num: function(v) {return "<span class='bold'>"+v+"</span>"},
     q_common_tonnage: function(v) {return "<span class='bold'>"+v+"</span>"},
     e_date_of_issue: function(v){ return Ext.Date.format(v,'d.m.y')},
@@ -111,7 +111,18 @@ Ext.define('Rq.view.RequestGrid', {
 
   dataChanged: function(source, recordId, value, oldValue, options){
     // Запись в модельку
-    current_request.setFromProperties(source)
+
+
+    if(recordId=="d_load_id" && value==1) { // Если порожняк
+      current_request.set('rate_for_car',true);
+      Ext.ComponentQuery.query('requestgrid')[0].setSource(current_request.getProperties())
+    } 
+
+    if(recordId=="d_load_id" && value!=1) {
+      current_request.set('rate_for_car',false);
+      Ext.ComponentQuery.query('requestgrid')[0].setSource(current_request.getProperties())
+    }
+//    current_request.setFromProperties(source)
     // И пересчитываем заявку
     if(Ext.ComponentQuery.query('requestgrid')[0] && Ext.ComponentQuery.query('costsgrid')[0]) {
       Rq.controller.Requests.calculateRequest()

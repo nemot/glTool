@@ -6,7 +6,8 @@ Ext.define('Rq.view.Viewport', {
       'Rq.view.RequestGrid',
       'Rq.view.CarsGrid',
       'Rq.view.PlacesGrid',
-      'Rq.view.CostsGrid'
+      'Rq.view.CostsGrid',
+      'Rq.view.TransitStationsGrid'
     ],
     id: 'viewport',
     layout: 'border',
@@ -27,7 +28,9 @@ Ext.define('Rq.view.Viewport', {
         ]}, 
         {region:'center', layout:'hbox', items:[
           {xtype:'placesgrid',width:300, height:150 },
+          {xtype:'transitstationsgrid', width:300, height:150},
           {xtype:'costsgrid', flex:1, height:150}
+          
         ]}, 
 
         // Кнопки
@@ -35,7 +38,7 @@ Ext.define('Rq.view.Viewport', {
           {xtype:'button', text:'Закрыть', height:40, padding:'0 10 0 10', handler:function(){window.close()}},
           {flex:1, xtype:'label'},
           
-          {xtype:'button', iconCls:'save', text:'Сохранить', height:40, padding:'0 10 0 10', id:'saveRequestBtn'}
+          {xtype:'button', iconCls:'save', text:'Сохранить', tooltip:"Ctrl+S", height:40, padding:'0 10 0 10', id:'saveRequestBtn'}
         ]}
         
       ];

@@ -8,9 +8,13 @@ class Request < ActiveRecord::Base
   belongs_to :user
   has_many :cars, :order=>"id DESC", :dependent => :destroy
   has_many :places, :dependent => :destroy
+  has_many :transit_stations, :dependent => :destroy
   has_many :costs, :through=>:places
   has_many :documents, :dependent => :destroy
 
+  def log_string
+    "№#{self.id} (#{self.cars_num} ваг. #{self.common_tonnage} тн. #{self.station_from_name}-#{self.station_to_name})"
+  end
 
   def client_name
     self.client.nil? ? "" : self.client.name

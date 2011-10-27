@@ -2,13 +2,14 @@ Ext.define('Rq.controller.Requests', {
   extend: 'Ext.app.Controller',
 
   models:['Request', 'User', 'Client', 'Station', 'Code', 'Car', 'Place', 'Country'],
-  stores:['Countries', 'Cars', 'Places', 'Costs', 'Clients'],
+  stores:['Countries', 'Cars', 'Places', 'Costs', 'Clients', 'TransitStations'],
 
   init: function() {
     current_user = new Rq.model.User(current_user);
     current_request = new Rq.model.Request(current_request);
     this.control({
       "#addCodesMenuItem": {click:this.showAddCodesWindow},
+      "#addTransitStationMenuItem": {click:this.addTransitStation},
       "#addCodesSubmitBtn": {click:this.addCodesToGrid},
       "#fromField": {specialkey:function(f,e){if(e.getKey() == e.ENTER){this.addCodesToGrid()}}},
       "#toField": {specialkey:function(f,e){if(e.getKey() == e.ENTER){this.addCodesToGrid()}}},
@@ -22,10 +23,21 @@ Ext.define('Rq.controller.Requests', {
   },
 
 
+  // Добавляет транзитную станцию и начинает ее редактировать
+  addTransitStation: function(){
+    var transitStationsGrid = Ext.ComponentQuery.query('transitstationsgrid')[0];
+    var transitStationsStore = transitStationsGrid.getStore();
+    transitStationsStore.add({request_id:current_request.get('id'), station_id:null, station_name:''});
+    setTimeout(function(){
+      transitStationsGrid.plugins[0].startEdit(transitStationsStore.last(), transitStationsGrid.columns[0])
+    }, 300)
+  },
+
+
   saveRequest: function(){
     // Getting needed data
     var lmask = new Ext.LoadMask(Ext.ComponentQuery.query('requestviewport')[0], {msg:" Сохраняем..."});
-    var carRecords = []; var placeRecords = []; var costRecords = [];
+    var carRecords = []; var placeRecords = []; var costRecords = []; var tsRecords = [];
     Ext.ComponentQuery.query('carsgrid')[0].getStore().each(function(rec){ 
       carRecords.push(Ext.encode(rec.data)) 
     })    
@@ -34,6 +46,9 @@ Ext.define('Rq.controller.Requests', {
     })
     Ext.ComponentQuery.query('costsgrid')[0].getStore().each(function(rec){ 
       costRecords.push(Ext.encode(rec.data)) 
+    })
+    Ext.ComponentQuery.query('transitstationsgrid')[0].getStore().each(function(rec){ 
+      tsRecords.push(Ext.encode(rec.data)) 
     })
 
     lmask.show();
@@ -44,17 +59,19 @@ Ext.define('Rq.controller.Requests', {
         request: Ext.encode(current_request.data),
         cars: Ext.encode(carRecords), 
         places: Ext.encode(placeRecords), 
-        costs: Ext.encode(costRecords)
+        costs: Ext.encode(costRecords),
+        transit_stations: Ext.encode(tsRecords)
       },
       success: function(response){
         var obj = Ext.decode(response.responseText);
         lmask.hide();
-//        console.dir(obj);
+        if(window.opener.Ext.ComponentQuery.query('requestsgrid')[0])
+          window.opener.Ext.ComponentQuery.query('requestsgrid')[0].getStore().load();
+        window.close();
       }, 
       failure: function(response){
         lmask.hide();
         Ext.example.msg('Ошибка на сервере!', 'Произошла ошибка на сервере. Было послано письмо администратору с описанием проблемы.');
-//        console.log('server-side failure with status code ' + response.status);
       }
     });
 
@@ -63,6 +80,8 @@ Ext.define('Rq.controller.Requests', {
 
 
   statics: {
+
+    
     // Отображает окошко с документами
     showDocsWindow: function(){
       var win = Ext.create('Ext.window.Window',{
@@ -139,8 +158,8 @@ Ext.define('Rq.controller.Requests', {
       // Пишем это все в модельку заявки
       current_request.set('cars_num',cars_num);
       current_request.set('common_tonnage',common_tonnage);
-      current_request.set('jd_sum',jd_sum);
-      current_request.set('client_sum',client_sum);
+      current_request.set('jd_sum',jd_sum.toFixed(2));
+      current_request.set('client_sum',client_sum.toFixed(2));
 
       // Даем новый сурс для RequestGrid
       requestGrid.setSource(current_request.getProperties())

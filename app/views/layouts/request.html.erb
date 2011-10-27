@@ -32,6 +32,15 @@
 
   <%= yield %>
   <script type="text/javascript" src="/request.js"></script>
-
+  <script type="text/javascript">
+    function finalCheck(){
+      if(!Ext.ComponentQuery.query('requestviewport')[0]) {
+        document.write('<h2>Подождите...</h2>')
+        window.location.reload()
+      }
+    }
+    setTimeout(finalCheck, 1000)
+    
+  </script>
 </body>
 </html>

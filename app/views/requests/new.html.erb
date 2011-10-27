@@ -46,6 +46,15 @@
   <% end -%>
   ];
 
+  var transit_stations = [
+  <% @request.transit_stations.each do |p| -%>
+    <%= p.to_json(:methods=>[:station_name, :station_to_name]).html_safe %>,
+  <% end -%>
+  <% 4.times do |i| -%>
+    // {id:<%= -1-i %>, request_id:<%= @request.id %>, station_id:null},
+  <% end if @request.transit_stations.empty? %>
+  ];
+
   var costs = [
   <% @request.costs.each do |c| -%>
     <%= c.to_json(:methods=>[:country_name]).html_safe %>

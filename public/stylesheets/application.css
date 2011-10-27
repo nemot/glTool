@@ -42,3 +42,18 @@ div.document-item a {
     text-decoration:underline;
     font-weight: normal;
 }
+
+.hint { font-size: 9px; color: #666666; }
+#clientDeleteMessage { padding: 20px; }
+#clientDeleteMessage ul {
+    margin: 15px;
+    list-style: circle outside;
+}
+#clientDeleteMessage ul li a { color: black; }
+
+
+
+
+
+
+

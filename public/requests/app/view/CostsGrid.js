@@ -54,7 +54,7 @@ Ext.define('Rq.view.CostsGrid', {
   showContainerContextMenu: function(view, e){
     var grid = Ext.ComponentQuery.query('costsgrid')[0];
     var menu = Ext.create('Ext.menu.Menu', { items: [] });
-    var addAction = {text:'Добавить', iconCls:'add', id:'addCostsMenuItem'};
+    var addAction = {text:'Добавить  <i class="hint">*Ctrl+D</i>', iconCls:'add', id:'addCostsMenuItem'};
     menu.add(addAction);
     menu.showAt(e.getXY())
   },
@@ -67,7 +67,7 @@ Ext.define('Rq.view.CostsGrid', {
     var deleteAction = {text:'Удалить', iconCls:'delete', id:'deleteCostsMenuItem', handler:function(){
       grid.getStore().remove(rec);
     }};
-    var addAction = {text:'Добавить', iconCls:'add', id:'addCostsMenuItem'};
+    var addAction = {text:'Добавить <i class="hint">*Ctrl+D</i>', iconCls:'add', id:'addCostsMenuItem'};
     menu.add(addAction);
     menu.add('');
     menu.add(deleteAction);

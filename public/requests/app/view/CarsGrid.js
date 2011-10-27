@@ -102,7 +102,7 @@ Ext.define('Rq.view.CarsGrid', {
     var grid = Ext.ComponentQuery.query('carsgrid')[0];
     var menu = Ext.create('Ext.menu.Menu', { items: [] });
 
-    var addAction = {text:'Добавить коды', iconCls:'add', id:'addCodesMenuItem'};
+    var addAction = {text:'Добавить коды <i class="hint">*Ctrl+C</i>', iconCls:'add', id:'addCodesMenuItem'};
     menu.add(addAction);
     menu.showAt(e.getXY())
   },
@@ -113,25 +113,29 @@ Ext.define('Rq.view.CarsGrid', {
     var rec = grid.getSelectionModel().getSelection()[0];
     var menu = Ext.create('Ext.menu.Menu', { items: [] });
     var deleteAction = {text:'Удалить', iconCls:'delete', id:'deleteCarsMenuItem'}
-    var addAction = {text:'Добавить коды', iconCls:'add', id:'addCodesMenuItem'};
+    var addAction = {text:'Добавить коды <i class="hint">*Ctrl+C</i>', iconCls:'add', id:'addCodesMenuItem'};
     var fillSameWayAction = { text:'Заполнить так же', iconCls:'edit', menu:{
       items:[ ]
     }};
      // Запонение ставками
-    fillSameWayAction.menu.items.push({text:'Ставки', handler:function(){
+    fillSameWayAction.menu.items.push({text:'Ставки <i class="hint">*Ctrl+F</i>', handler:function(){
       var carsStore = Ext.ComponentQuery.query('carsgrid')[0].getStore();
       var selectedCar = Ext.ComponentQuery.query('carsgrid')[0].getSelectionModel().getSelection()[0];
+      if(!selectedCar){selectedCar = carsStore.first()}
       carsStore.each(function(car){
-        Ext.each(car.get('codes'), function(code, index){
-          code.rate_jd_real = selectedCar.get('codes')[index].rate_jd_real;
-          code.rate_jd = selectedCar.get('codes')[index].rate_jd;
-          code.rate_client = selectedCar.get('codes')[index].rate_client;
-        })
-        car.set('rate_jd_real', selectedCar.get('rate_jd_real'))
-        car.set('rate_jd', selectedCar.get('rate_jd'))
-        car.set('rate_client', selectedCar.get('rate_client'))
-        Rq.view.CarsGrid.recalcRates(car);
-        
+        if(car!=selectedCar) {
+          Ext.each(car.get('codes'), function(code, index){
+            code.rate_jd_real = selectedCar.get('codes')[index].rate_jd_real;
+            code.rate_jd = selectedCar.get('codes')[index].rate_jd;
+            code.rate_client = selectedCar.get('codes')[index].rate_client;
+          })
+          Rq.view.CarsGrid.recalcRates(car);
+          car.beginEdit();
+          car.set('rate_jd_real', selectedCar.get('rate_jd_real'))
+          car.set('rate_jd', selectedCar.get('rate_jd'))
+          car.set('rate_client', selectedCar.get('rate_client'))
+          car.endEdit(); 
+        }
       });
       Rq.controller.Requests.calculateRequest()
     }});
