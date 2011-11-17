@@ -20,7 +20,7 @@ Ext.define('Rq.view.CarsGrid', {
           return i.place_id==lastEditorField.place_id
         })[0];
         eval("code."+lastEditorField.param+" = newValue")
-        Rq.view.CarsGrid.recalcRates(e.record);
+//        Rq.view.CarsGrid.recalcRates(e.record);
         carsgrid.lastEditorId = null;
         carsgrid.getView().refresh();
         e.cancel = true;

@@ -2,6 +2,7 @@ class Client < ActiveRecord::Base
   has_many :transactions 
   has_many :client_users, :dependent=>:destroy
   has_many :users, :through=>:client_users
+  has_many :bills, :dependent => :destroy
 
   has_many :requests, :dependent=>:destroy
 

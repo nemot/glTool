@@ -12,6 +12,9 @@ class Request < ActiveRecord::Base
   has_many :costs, :through=>:places
   has_many :documents, :dependent => :destroy
 
+  has_one :bill_request
+  has_one :bill, :through=>:bill_request
+
   def log_string
     "№#{self.id} (#{self.cars_num} ваг. #{self.common_tonnage} тн. #{self.station_from_name}-#{self.station_to_name})"
   end

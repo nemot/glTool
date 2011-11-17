@@ -5,7 +5,7 @@ class ClientsController < ApplicationController
 
 
   # To json params
-  @@client_fields = [:id,:name,:address,:phone,:email,:director,:payment_details,:is_expeditor,:balance,:created_at];
+  @@client_fields = [:id,:name,:address,:phone,:email,:director,:payment_details,:is_expeditor, :contract_number, :contract_date,:balance,:created_at];
 
   def users
     @users = User.all

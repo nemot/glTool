@@ -1,5 +1,5 @@
 class RequestsController < ApplicationController
-  before_filter :require_user
+  before_filter :require_user, :set_current_user
 
   @@json_params = [
     :id,
@@ -20,7 +20,9 @@ class RequestsController < ApplicationController
     :jd_sum,
     :cars_num,
     :common_tonnage,
-    :created_user_id
+    :created_user_id,
+    :has_invoice,
+    :payed
   ]
 
   @@json_methods = [
@@ -32,28 +34,15 @@ class RequestsController < ApplicationController
   ]
 
   def index
-    cond = "1=1 "
-    cond << "AND client_id IN (#{current_user.client_ids}) " if current_user.is_engineer?
-    cond << "AND load_id=1 " if params[:loadless].eql?('true')
-    params[:query] = "" if params[:query].nil?
-    unless params[:query].empty?
-      cond << "AND id IN( SELECT DISTINCT cars.request_id  FROM cars
-        LEFT JOIN codes ON codes.car_id=cars.id 
-        WHERE codes.number LIKE '%#{params[:query]}%' )" if params[:find_param].eql?('code')
-      cond << "AND id IN( SELECT DISTINCT cars.request_id  FROM cars
-        WHERE cars.number LIKE '%#{params[:query]}%' )" if params[:find_param].eql?('car')
-      cond << "AND requests.id='#{params[:query]}'" if params[:find_param].eql?('request')
-      cond << "AND requests.client_id IN( SELECT DISTINCT clients.id FROM clients
-        WHERE clients.name LIKE '%#{params[:query]}%' )" if params[:find_param].eql?('client')
-    end
-
     @requests = Request.all(
-      :conditions=>cond,
+      :conditions=>make_find_conditions,
       :order=>"date_of_issue DESC", 
       :offset=>params[:start].to_i,
       :limit=>params[:limit].to_i
     )
-    render :json=>{:success=>true, :requests=>@requests.as_json(:only=>@@json_params, :methods=>@@json_methods)}
+    count = Request.count(:conditions=>make_find_conditions)
+    render :json=>{:success=>true, :requests=>@requests.as_json(:only=>@@json_params, :methods=>@@json_methods), 
+      :total=>count }
   end
 
   def new
@@ -167,7 +156,45 @@ class RequestsController < ApplicationController
     render :json=>{:success=>true}
   end
 
+  def destroy
+    @request = Request.find_by_id(params[:id])
+    current_user.log('request.remove', @request.log_string, @request.to_json)
+    deleted_records = Request.destroy(params[:id])
+    @requests = Request.all(
+      :conditions=>make_find_conditions,
+      :order=>"date_of_issue DESC", 
+      :offset=>params[:start].to_i,
+      :limit=>params[:limit].to_i
+    )
+    count = Request.count(:conditions=>make_find_conditions)
+    render :json=>{
+      :success=>deleted_records.length.eql?(1),
+      :requests=>@requests.as_json(:only=>@@json_params, :methods=>@@json_methods), 
+      :total=>count 
+    }
+  end
+
   private 
+
+  def make_find_conditions
+    cond = "1=1 "
+    cond << "AND client_id IN (#{current_user.client_ids}) " if current_user.is_engineer?
+    cond << "AND load_id=1 " if params[:loadless].eql?('true')
+    cond << "AND client_id=#{params[:outbox_client_id]} AND has_invoice=false " if params[:outbox_client_id]
+    params[:query] = "" if params[:query].nil?
+    unless params[:query].empty?
+      cond << "AND id IN( SELECT DISTINCT cars.request_id  FROM cars
+        LEFT JOIN codes ON codes.car_id=cars.id 
+        WHERE codes.number LIKE '%#{params[:query]}%' )" if params[:find_param].eql?('code')
+      cond << "AND id IN( SELECT DISTINCT cars.request_id  FROM cars
+        WHERE cars.number LIKE '%#{params[:query]}%' )" if params[:find_param].eql?('car')
+      cond << "AND requests.id='#{params[:query]}'" if params[:find_param].eql?('request')
+      cond << "AND requests.client_id IN( SELECT DISTINCT clients.id FROM clients
+        WHERE clients.name LIKE '%#{params[:query]}%' )" if params[:find_param].eql?('client')
+    end
+
+    return cond
+  end
 
   def parse_json_params(pname)
     result = []

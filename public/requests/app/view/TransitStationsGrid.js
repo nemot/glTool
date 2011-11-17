@@ -5,6 +5,7 @@ Ext.define('Rq.view.TransitStationsGrid', {
   title:'Транзитные станции',
   store: 'TransitStations',
   columnLines:true,
+  emptyText:'Не добавлены',
 
   selType: 'rowmodel',
   plugins: [ Ext.create('Ext.grid.plugin.CellEditing', { clicksToEdit: 1 }) ],
@@ -39,6 +40,8 @@ Ext.define('Rq.view.TransitStationsGrid', {
       containercontextmenu: this.showContainerContextMenu
     };
     this.callParent();
+    console.log(this.getView().emptyText)
+    this.getView().emptyText = "Hello there!"
   },
 
 

@@ -20,6 +20,11 @@ class CreateRequests < ActiveRecord::Migration
       t.float    :jd_sum,          :null=>false, :default=>0.00
       t.integer  :cars_num,        :null=>false, :default=>0
       t.integer  :common_tonnage,  :null=>false, :default=>0
+
+      # Это для инвойсов
+      t.boolean  :has_invoice,     :null=>false, :default=>false
+      t.boolean  :payed,           :null=>false, :default=>false
+
       # Ну и создавший пользователь
       t.integer  :created_user_id,  :null=>false
       t.timestamps

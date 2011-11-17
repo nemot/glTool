@@ -108,8 +108,10 @@ Ext.define('Gl.controller.Clients', {
     },
 
     editClient: function(btn){
+      var selectedClient = Ext.ComponentQuery.query('clientsgrid')[0].getSelectionModel().getSelection()[0];
       Ext.create("Gl.view.clients.ClientWindow", {
-        rec: Ext.ComponentQuery.query('clientsgrid')[0].getSelectionModel().getSelection()[0]
+        title:selectedClient.get('name'),
+        rec: selectedClient
       }).show();
     },
   
@@ -120,7 +122,7 @@ Ext.define('Gl.controller.Clients', {
 
       if(Ext.ComponentQuery.query('clientwindow')[0].rec.getId() > 1)
         rec.beginEdit()
-      
+      console.log(form.getValues())
       rec.set(form.getValues());
 
       if(Ext.ComponentQuery.query('clientwindow')[0].rec.getId() > 1)

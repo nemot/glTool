@@ -13,7 +13,7 @@ Ext.Loader.setConfig({
 Ext.require('Gl.Application');
 
 Ext.onReady(function() {
+//  EC.common.ext.form.field.TinyMCEEditor.initTinyMCE();
   Ext.tip.QuickTipManager.init();
   Ext.create('Gl.Application');
-  
 });

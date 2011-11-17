@@ -10,7 +10,29 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 21) do
+ActiveRecord::Schema.define(:version => 23) do
+
+  create_table "bill_requests", :force => true do |t|
+    t.integer  "bill_id",    :null => false
+    t.integer  "request_id", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "bills", :force => true do |t|
+    t.integer  "client_id",                          :null => false
+    t.integer  "created_user_id",                    :null => false
+    t.boolean  "inbox",           :default => false
+    t.string   "number",          :default => "",    :null => false
+    t.float    "summ",            :default => 0.0,   :null => false
+    t.float    "backwash"
+    t.boolean  "sent",            :default => false
+    t.datetime "sent_at"
+    t.boolean  "payed",           :default => false
+    t.datetime "payed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "car_types", :force => true do |t|
     t.string "name", :null => false
@@ -37,14 +59,16 @@ ActiveRecord::Schema.define(:version => 21) do
   end
 
   create_table "clients", :force => true do |t|
-    t.string   "name",                               :null => false
-    t.string   "address",                            :null => false
-    t.string   "phone",                              :null => false
-    t.string   "email",                              :null => false
-    t.string   "director",                           :null => false
-    t.text     "payment_details",                    :null => false
+    t.string   "name",                                               :null => false
+    t.string   "address",                                            :null => false
+    t.string   "phone",                                              :null => false
+    t.string   "email",                                              :null => false
+    t.string   "director",                                           :null => false
+    t.text     "payment_details",                                    :null => false
     t.boolean  "is_expeditor",    :default => false
-    t.float    "balance",         :default => 0.0,   :null => false
+    t.string   "contract_number", :default => ""
+    t.datetime "contract_date",   :default => '2011-11-16 00:00:00'
+    t.float    "balance",         :default => 0.0,                   :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -73,7 +97,7 @@ ActiveRecord::Schema.define(:version => 21) do
 
   create_table "documents", :force => true do |t|
     t.integer  "request_id",                              :null => false
-    t.date     "date_of_issue", :default => '2011-10-27', :null => false
+    t.date     "date_of_issue", :default => '2011-11-16', :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -95,8 +119,8 @@ ActiveRecord::Schema.define(:version => 21) do
     t.integer  "station_from_id",                                            :null => false
     t.integer  "station_to_id",                                              :null => false
     t.integer  "load_id",                :default => 1,                      :null => false
-    t.date     "date_of_issue",          :default => '2011-10-27',           :null => false
-    t.date     "valid_until",            :default => '2011-10-31',           :null => false
+    t.date     "date_of_issue",          :default => '2011-11-16',           :null => false
+    t.date     "valid_until",            :default => '2011-11-30',           :null => false
     t.string   "type_of_transportation", :default => "Повагонная", :null => false
     t.string   "ownership",              :default => "СПС",               :null => false
     t.integer  "car_type_id",                                                :null => false
@@ -108,6 +132,8 @@ ActiveRecord::Schema.define(:version => 21) do
     t.float    "jd_sum",                 :default => 0.0,                    :null => false
     t.integer  "cars_num",               :default => 0,                      :null => false
     t.integer  "common_tonnage",         :default => 0,                      :null => false
+    t.boolean  "has_invoice",            :default => false,                  :null => false
+    t.boolean  "payed",                  :default => false,                  :null => false
     t.integer  "created_user_id",                                            :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -132,7 +158,7 @@ ActiveRecord::Schema.define(:version => 21) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "client_id",        :default => 1
-    t.datetime "date_of_transfer", :default => '2011-10-27 09:45:48'
+    t.datetime "date_of_transfer", :default => '2011-11-16 11:42:13'
   end
 
   create_table "transit_stations", :force => true do |t|

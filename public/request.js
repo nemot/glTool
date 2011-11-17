@@ -14,6 +14,7 @@ Ext.Loader.setConfig({ enabled: true, paths: {
 Ext.require('Rq.Application');
 
 Ext.onReady(function() {
+  
   Ext.tip.QuickTipManager.init();
   Ext.create('Rq.Application');
   

@@ -15,7 +15,8 @@ Ext.define('Gl.Application', {
       'TopMenu',
       'Users',
       'Clients',
-      'Requests'
+      'Requests',
+      'Bills'
     ],
 
     autoCreateViewport: true,

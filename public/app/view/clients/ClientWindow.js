@@ -1,7 +1,7 @@
 Ext.define('Gl.view.clients.ClientWindow', {
   extend: 'Ext.window.Window',
   alias : 'widget.clientwindow',
-  width:550, height:330, modal:true, layout:'fit',
+  width:650, height:430, modal:true, layout:'fit',
   rec: null,
   title:'Новый клиент',
 
@@ -23,14 +23,18 @@ Ext.define('Gl.view.clients.ClientWindow', {
         },
 
         items:[
-          {items:[
+          { items:[
             {fieldLabel:'Название компании', id:'clientNameField', tabIndex:1, name:'name', allowBlank:false, value:this.rec.get('name')},
             {fieldLabel:'Адрес', tabIndex:2, name:'address', value:this.rec.get('address')},
             {fieldLabel:'Телефоны', tabIndex:3, name:'phone', value:this.rec.get('phone')},
             {fieldLabel:'Электронная почта', vtype:'email', tabIndex:4, name:'email', value:this.rec.get('email')},
             {fieldLabel:'ФИО директора', tabIndex:5, name:'director', value:this.rec.get('director')},
-          ]},{items:[
-            {fieldLabel:'Реквизиты', xtype:'textareafield', tabIndex:6, name:'payment_details', height:230, value:this.rec.get('payment_details')}
+            {xtype:'datefield', fieldLabel:'Дата заключения договора', tabIndex:7, name:'contract_date', 
+              value:this.rec.get('contract_date'), submitFormat:'c'},
+            {fieldLabel:'Номер договора', tabIndex:6, name:'contract_number', value:this.rec.get('contract_number')},
+            
+          ]},{flex:2, items:[
+            {fieldLabel:'Реквизиты', xtype:'textareafield', tabIndex:8, name:'payment_details', height:330, value:this.rec.get('payment_details')}
           ]}  
         ]
       }

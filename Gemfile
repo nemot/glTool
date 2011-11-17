@@ -10,6 +10,10 @@ gem 'haml'
 gem 'authlogic'
 gem 'highline', '1.6.2'
 
+gem 'russian'
+gem 'rutils'
+gem 'writeexcel'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

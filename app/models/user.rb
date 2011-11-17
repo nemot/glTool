@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many :clients, :through=>:client_users
   has_many :actions, :class_name=>"UserAction"
   has_many :created_requests, :class_name=>"Request", :foreign_key=>"created_user_id"
+  has_many :bills, :foreign_key=>"created_user_id", :class_name => "User"
 
 
   def is_engineer?

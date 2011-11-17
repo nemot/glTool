@@ -50,10 +50,20 @@ div.document-item a {
     list-style: circle outside;
 }
 #clientDeleteMessage ul li a { color: black; }
-
-
-
-
+.requests_dvew {
+    background: white; border: 1px solid #A1A1A1 !important; margin-bottom:10px;
+}
+.request-wrap {
+    padding: 5px 5px 5px 10px;
+}
+.requestDeleteBnt {
+    cursor:pointer; opacity: 0.3; -webkit-opacity: 0.3;
+}
+.requestDeleteBnt:hover {
+    cursor:pointer; opacity: 1; -webkit-opacity: 1;
+}
+.small_date { font-size: 10px; color: #333333; text-align:right;}
+.forming {background-image: url(/ext/shared/icons/app/bullet_go.png) !important;}
 
 
 

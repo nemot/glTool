@@ -6,6 +6,10 @@ class Place < ActiveRecord::Base
   belongs_to :request
 
 
+  def country_short_name
+    self.country.nil? ? "" : (self.country.short_name.to_s.empty? ? self.country.name : self.country.short_name)
+  end
+
   def country_name
     self.country.nil? ? "" : self.country.name 
   end

@@ -8,6 +8,8 @@ Ext.define('Gl.model.Client', {
     {name:'email',  type:'string'}, 
     {name:'director',  type:'string'}, 
     {name:'payment_details',  type:'string'}, 
+    {name:'contract_date',  type:'date', dateFormat:"c"}, 
+    {name:'contract_number',  type:'string'}, 
     {name:'balance',  type:'string'}, 
     {name:'created_at',  type:'date', dateFormat:"c"}, 
     {name:'is_expeditor',  type:'boolean'}

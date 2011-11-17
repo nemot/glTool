@@ -4,6 +4,9 @@ Ext.define('Gl.view.Viewport', {
       'Gl.view.TopMenu',
       'Gl.view.MainContainer',
 
+      'Gl.view.RowExpander',
+      'Ext.selection.CheckboxModel',
+
       'Gl.view.users.MainGrid',
       'Gl.view.users.UserWindow',
       'Gl.view.users.EditUserWindow',
@@ -13,6 +16,9 @@ Ext.define('Gl.view.Viewport', {
       'Gl.view.clients.ClientWindow',
       'Gl.view.clients.FinancesWindow',
       'Gl.view.clients.PermissionsWindow',
+
+      'Gl.view.bills.TabPanel',
+      'Gl.view.bills.MainGrid',
 
       'Gl.view.requests.MainGrid',
     ],

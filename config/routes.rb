@@ -32,10 +32,13 @@ Gl2::Application.routes.draw do
   put "clients/:id/users/:user_id" => "clients#update_permission"
   resources :client_transactions
 
+  resources :bills
+
   resources :requests
   resources :stations
   resources :loads
   resources :car_types
   resources :places
+  
 
 end

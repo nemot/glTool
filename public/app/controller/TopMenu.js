@@ -8,16 +8,16 @@ Ext.define('Gl.controller.TopMenu', {
         'topmenu > button[action=users]': { click: this.onUsersClick },
         'topmenu > button[action=requests]': { click: this.onRequestsClick },
         'topmenu > button[action=clietns]': { click: this.onClientsClick },
-        'topmenu > button[action=reports]': { click: this.onReportsClick },
+        'topmenu > button[action=bills]': { click: this.onBillsClick },
       });
     },
 
     afterTopMenuRendered: function(cmp){
-      cmp.query('button[action=requests]')[0].toggle(true);
+      cmp.query('button[action=bills]')[0].toggle(true);
     },
 
     showDefaultController: function(mainContainer){
-      this.addToMainContainer({xtype:'requestsgrid'})
+      this.addToMainContainer({xtype:'billsgrid'})
     },
 
     onUsersClick: function(self){
@@ -35,9 +35,9 @@ Ext.define('Gl.controller.TopMenu', {
       this.addToMainContainer({xtype:'requestsgrid'})
     },
 
-    onReportsClick: function(self){
+    onBillsClick: function(self){
       self.toggle(true)
-      this.addToMainContainer({xtype:'button', text:'reports'})
+      this.addToMainContainer({xtype:'billsgrid'})
     },
 
     addToMainContainer: function(cmp){

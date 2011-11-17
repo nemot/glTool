@@ -29,7 +29,9 @@ Ext.define('Gl.model.Request', {
     },
     {name:'cars_num', type:'int'}, 
     {name:'common_tonnage', type:'int'}, 
-    {name:'created_user_id', type:'int'}
+    {name:'created_user_id', type:'int'},
+    {name:'has_invoice', type:'boolean'},
+    {name:'payed', type:'boolean'},
     
   ],
   validations: [
