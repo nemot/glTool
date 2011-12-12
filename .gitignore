@@ -4,4 +4,5 @@ log/*.log
 tmp/
 vendor/bundle
 vendor/bundle/*
-lib/stamp.png 
+lib/stamp.png
+lib/reports/*
