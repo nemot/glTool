@@ -117,9 +117,9 @@ Ext.define('Rq.controller.Requests', {
 
       // Считаем кол-во вагонов и общий тонаж
       var cars_num = 0;
-      var common_tonnage = 0;
-      var jd_sum = 0;
-      var client_sum = 0;
+          common_tonnage = 0;
+          jd_sum = 0;
+          client_sum = 0;
 
       carsGrid.getStore().each(function(car){ 
         if(car.get('in_use')){  // Все, кроме возврата
@@ -129,10 +129,10 @@ Ext.define('Rq.controller.Requests', {
           // Считаем ставки
           if(current_request.get("rate_for_car")){ // Если ствка за вагон
             client_sum = client_sum - 0 + car.get('rate_client')
-            jd_sum = jd_sum - 0 + car.get('rate_jd')
+            jd_sum = jd_sum - 0 + car.get('rate_jd_real')
           } else { // Если ставка за тонну
             client_sum = client_sum - 0 + (car.get('rate_client')*car.get('tonnage'))
-            jd_sum = jd_sum  - 0 + (car.get('rate_jd')*car.get('tonnage'))
+            jd_sum = jd_sum  - 0 + (car.get('rate_jd_real')*car.get('tonnage'))
           }
         }
       })

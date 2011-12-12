@@ -1,3 +1,5 @@
+.header-padding .x-column-header-inner {padding-top: 0px !important;}
+.large {font-size:16px;}
 .user_edit  { background-image: url(/ext/shared/icons/app/user_edit.png) !important; }
 .user_delete{ background-image:url(/ext/shared/icons/app/user_delete.png) !important; }
 .user_change_password{ background-image:url(/ext/shared/icons/app/key.png) !important; }
@@ -11,6 +13,7 @@
 .money_delete{ background-image:url(/ext/shared/icons/app/money_delete.png) !important; }
 .refresh{ background-image:url(/ext/shared/icons/app/arrow_refresh.png) !important; }
 .key{ background-image:url(/ext/shared/icons/app/key.png) !important; }
+.report{ background-image:url(/ext/shared/icons/app/table.png) !important; }
 
 
 .add {background-image: url( /ext/shared/icons/app/add.png ) !important;}
@@ -20,6 +23,7 @@
 .x-panel-default-framed { border-width:0px; }
 
 .pred {color:red; cursor:pointer;}
+.red {color:blue;}
 .pgreen {color:green; cursor:pointer; font-weight:bold;}
 
 .bold{font-weight:bold !important;}
@@ -64,6 +68,8 @@ div.document-item a {
 }
 .small_date { font-size: 10px; color: #333333; text-align:right;}
 .forming {background-image: url(/ext/shared/icons/app/bullet_go.png) !important;}
+
+#outboxForm .x-mask {opacity: 0.1;}
 
 
 

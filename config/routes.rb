@@ -24,21 +24,37 @@ Gl2::Application.routes.draw do
     member do
       get 'users'
       get 'expeditor_in_requests'
+      get 'client_report'
+      get 'exp_report'
+      get 'pgk_report'
     end
     collection do
+      get 'get_total_report'
       get 'autocomplete'
     end
   end
   put "clients/:id/users/:user_id" => "clients#update_permission"
   resources :client_transactions
 
-  resources :bills
+  resources :bills do
+    member do
+      get 'get_invoice'
+    end
+    collection do
+      post 'create_inbox'
+    end
+  end
 
   resources :requests
   resources :stations
   resources :loads
   resources :car_types
   resources :places
+  resources :deltas do 
+    collection do 
+      get :total
+    end
+  end
   
 
 end

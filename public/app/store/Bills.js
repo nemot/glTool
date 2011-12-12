@@ -5,7 +5,7 @@ Ext.define('Gl.store.Bills', {
   sorters: [{property : 'id', direction: 'DESC'}],
   proxy: {
     type: 'rest',
-    url : '/bills', extraParams:{inbox:false},
+    url : '/bills', extraParams:{inbox:false, only_unpayed:false},
     reader: {type:'json', root:'bills',},
     writer: {type:'json', root:'bills', writeAllFields:true}
   }

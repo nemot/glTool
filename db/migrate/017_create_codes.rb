@@ -8,6 +8,7 @@ class CreateCodes < ActiveRecord::Migration
       t.float   :rate_jd,     :default=>0.0
       t.float   :rate_client, :default=>0.0
     end
+    add_index :codes, :number
   end
 
   def self.down

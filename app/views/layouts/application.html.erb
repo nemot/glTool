@@ -15,6 +15,7 @@
 
   <script type="text/javascript"> Ext.ns("Gl"); </script>
   <script>
+    var total_delta = <%= @current_user.is_engineer? ? 0 : Client.total_delta %>;
     var current_user = {
       id:<%= current_user.id %>, 
       login:"<%= current_user.login %>", 

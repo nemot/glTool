@@ -19,6 +19,8 @@ class RequestsController < ApplicationController
     :client_sum,
     :jd_sum,
     :cars_num,
+    :profit,
+    :delta,
     :common_tonnage,
     :created_user_id,
     :has_invoice,
@@ -36,7 +38,7 @@ class RequestsController < ApplicationController
   def index
     @requests = Request.all(
       :conditions=>make_find_conditions,
-      :order=>"date_of_issue DESC", 
+      :order=>(params[:outbox_client_id] ? "has_invoice ASC" : "date_of_issue DESC"), 
       :offset=>params[:start].to_i,
       :limit=>params[:limit].to_i
     )
@@ -92,6 +94,9 @@ class RequestsController < ApplicationController
       @request = Request.create(request_attributes.merge!({:created_user_id=>current_user.id}))
       current_user.log('request.create', @request.log_string, @request.to_json)
     else
+      @request.decrease_expeditor_balance
+      @request.decrease_client_balance
+      @request.decrease_delta
       @request.update_attributes!(request_attributes)
       current_user.log('request.update', @request.log_string, @request.to_json)
     end
@@ -151,13 +156,20 @@ class RequestsController < ApplicationController
       })
     }
 
-  
+    @request = Request.find_by_id(request["id"])
+    @request.increase_expeditor_balance
+    @request.increase_client_balance
+    @request.increase_delta
+    @request.update_profit_and_delta
     
     render :json=>{:success=>true}
   end
 
   def destroy
     @request = Request.find_by_id(params[:id])
+    @request.decrease_expeditor_balance
+    @request.decrease_client_balance
+    @request.decrease_delta
     current_user.log('request.remove', @request.log_string, @request.to_json)
     deleted_records = Request.destroy(params[:id])
     @requests = Request.all(
@@ -180,14 +192,14 @@ class RequestsController < ApplicationController
     cond = "1=1 "
     cond << "AND client_id IN (#{current_user.client_ids}) " if current_user.is_engineer?
     cond << "AND load_id=1 " if params[:loadless].eql?('true')
-    cond << "AND client_id=#{params[:outbox_client_id]} AND has_invoice=false " if params[:outbox_client_id]
+    cond << "AND client_id=#{params[:outbox_client_id]} " if params[:outbox_client_id]
     params[:query] = "" if params[:query].nil?
     unless params[:query].empty?
       cond << "AND id IN( SELECT DISTINCT cars.request_id  FROM cars
         LEFT JOIN codes ON codes.car_id=cars.id 
-        WHERE codes.number LIKE '%#{params[:query]}%' )" if params[:find_param].eql?('code')
+        WHERE codes.number = '#{params[:query]}' )" if params[:find_param].eql?('code')
       cond << "AND id IN( SELECT DISTINCT cars.request_id  FROM cars
-        WHERE cars.number LIKE '%#{params[:query]}%' )" if params[:find_param].eql?('car')
+        WHERE cars.number = '#{params[:query]}' )" if params[:find_param].eql?('car')
       cond << "AND requests.id='#{params[:query]}'" if params[:find_param].eql?('request')
       cond << "AND requests.client_id IN( SELECT DISTINCT clients.id FROM clients
         WHERE clients.name LIKE '%#{params[:query]}%' )" if params[:find_param].eql?('client')
@@ -205,6 +217,14 @@ class RequestsController < ApplicationController
       v.each{|c| result << ActiveSupport::JSON.decode(c) }
     end
     result
+  end
+
+  def self.json_params
+    @@json_params
+  end
+
+  def self.json_methods
+    @@json_methods
   end
 
 end

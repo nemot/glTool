@@ -12,6 +12,10 @@ class CreateCars < ActiveRecord::Migration
       t.float   :rate_jd,      :null=>false, :default=>0.0
       t.float   :rate_client,  :null=>false, :default=>0.0
     end
+
+    add_index :cars, :request_id
+    add_index :cars, :number
+    
   end
 
   def self.down

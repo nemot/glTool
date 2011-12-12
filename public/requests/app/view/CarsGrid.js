@@ -20,7 +20,7 @@ Ext.define('Rq.view.CarsGrid', {
           return i.place_id==lastEditorField.place_id
         })[0];
         eval("code."+lastEditorField.param+" = newValue")
-//        Rq.view.CarsGrid.recalcRates(e.record);
+        Rq.view.CarsGrid.recalcRates(e.record);
         carsgrid.lastEditorId = null;
         carsgrid.getView().refresh();
         e.cancel = true;
@@ -28,7 +28,7 @@ Ext.define('Rq.view.CarsGrid', {
         Rq.controller.Requests.calculateRequest()
       }
     
-      if(e.field.toString() == "rate_jd_real" && !current_user.is_engineer()){
+      if(e.field.toString() == "rate_jd_real"){
         Ext.each(e.record.get('codes'), function(c){ c.rate_jd_real = 0.00; })
       }
 
@@ -75,15 +75,15 @@ Ext.define('Rq.view.CarsGrid', {
     // Добавляем колонки со ставками возвратом
     if(!current_user.is_engineer()) {
       this.jdRealColumn = {
-        header: '<b> ЖДР</b>', dataIndex:'rate_jd_real', width:55, xtype: 'numbercolumn', format:'0.00',  align:'right',
+        header: '<b>ЖД</b>', dataIndex:'rate_jd_real', width:55, xtype: 'numbercolumn', format:'0.00',  align:'right',
         field:{xtype:'numberfield', hideTrigger: true, decimalSeparator:',', selectOnFocus:true}, tdCls:'bold'
       }
     }
     this.columns.items.push({header: '<b>ИТОГО</b>', dataIndex:'', columns:[
       this.jdRealColumn,
-      {header: '<b>ЖД</b>', dataIndex:'rate_jd', width:55, xtype: 'numbercolumn', format:'0.00',  align:'right',
+      {header: '<b>GR</b>', dataIndex:'rate_jd', width:55, xtype: 'numbercolumn', format:'0.00',  align:'right',
         field:{xtype:'numberfield', hideTrigger: true, decimalSeparator:',', selectOnFocus:true}, tdCls:'bold' },
-      {header: '<b>КЛИЕНТ</b>', dataIndex:'rate_client', width:55, xtype: 'numbercolumn', format:'0.00',  align:'right',
+      {header: '<b>КЛ</b>', dataIndex:'rate_client', width:55, xtype: 'numbercolumn', format:'0.00',  align:'right',
         field:{xtype:'numberfield', hideTrigger: true, decimalSeparator:',' , selectOnFocus:true}, tdCls:'bold'}
     ]})
 //    this.columns.items.push()
@@ -185,10 +185,11 @@ Ext.define('Rq.view.CarsGrid', {
           rate_client_sum = 0.00,
           rate_jd_real_sum = 0.00;
       Ext.each(record.get('codes'), function(i){
-        rate_jd_sum += i.rate_jd; rate_client_sum += i.rate_client; 
-        if(!current_user.is_engineer()){rate_jd_real_sum += i.rate_jd_real};
+        rate_jd_real_sum += i.rate_jd_real;
+        rate_jd_sum += i.rate_jd; 
+        rate_client_sum += i.rate_client; 
       })
-      if(!current_user.is_engineer()){record.set('rate_jd_real', rate_jd_real_sum)};
+      record.set('rate_jd_real', rate_jd_real_sum);
       record.set('rate_jd', rate_jd_sum);
       record.set('rate_client', rate_client_sum);
     },
@@ -243,44 +244,42 @@ Ext.define('Rq.view.CarsGrid', {
 
       var ratesColumn = {header:short_name, dataIndex:pl.get('id'), columns:[], cls:'border-right'};
       
-      // Ставка ЖДР
-      if(!current_user.is_engineer()){
-      ratesColumn.columns.push({header:"ЖДР", dataIndex:'codes',width:55, editable:true, align:'right',
-          renderer:function(data, metaData, rec, rowIndex, colIndex, store, view){
-            return Ext.Array.filter(rec.get('codes'), function(i){ 
-              return i.place_id==pl.get('id') 
-            })[0].rate_jd_real.toFixed(2).toString().replace("\.", ',');
-          },
-          field:{xtype:'textfield', place_id:pl.get('id'), param:'rate_jd_real', listeners:{focus:function(c, options){
-            Ext.ComponentQuery.query('carsgrid')[0].lastEditorId = c.id;
-            col = cmp.plugins[0].getActiveColumn(); rec = cmp.plugins[0].getActiveRecord();
-            c.setValue(Ext.Array.filter(rec.get('codes'), function(i){ 
-              return i.place_id==pl.get('id')
-            })[0].rate_jd_real.toFixed(2).toString().replace("\.", ','))
-            c.focus(true)
-          }}},
-          getEditor:function(record, defaultValue){return Ext.create('Ext.grid.CellEditor', {field:this.field})}
-        })
-      }
       // Ставка ЖД
-      ratesColumn.columns.push({header:"ЖД", dataIndex:'codes', width:55, editable:true, align:'right',
-          renderer:function(data, metaData, rec, rowIndex, colIndex, store, view){
-            return Ext.Array.filter(rec.get('codes'), function(i){ 
-              return i.place_id==pl.get('id') 
-            })[0].rate_jd.toFixed(2).toString().replace("\.", ',');
-          },
-          field:{xtype:'textfield', place_id:pl.get('id'), param:'rate_jd', listeners:{focus:function(c, options){
-            Ext.ComponentQuery.query('carsgrid')[0].lastEditorId = c.id;
-            col = cmp.plugins[0].getActiveColumn(); rec = cmp.plugins[0].getActiveRecord();
-            c.setValue(Ext.Array.filter(rec.get('codes'), function(i){ 
-              return i.place_id==pl.get('id')
-            })[0].rate_jd.toFixed(2).toString().replace("\.", ','))
-            c.focus(true)
-          }}},
-          getEditor:function(record, defaultValue){return Ext.create('Ext.grid.CellEditor', {field:this.field})}
-        })
+      ratesColumn.columns.push({header:"ЖД", dataIndex:'codes',width:55, editable:true, align:'right',
+        renderer:function(data, metaData, rec, rowIndex, colIndex, store, view){
+          return Ext.Array.filter(rec.get('codes'), function(i){ 
+            return i.place_id==pl.get('id') 
+          })[0].rate_jd_real.toFixed(2).toString().replace("\.", ',');
+        },
+        field:{xtype:'textfield', place_id:pl.get('id'), param:'rate_jd_real', listeners:{focus:function(c, options){
+          Ext.ComponentQuery.query('carsgrid')[0].lastEditorId = c.id;
+          col = cmp.plugins[0].getActiveColumn(); rec = cmp.plugins[0].getActiveRecord();
+          c.setValue(Ext.Array.filter(rec.get('codes'), function(i){ 
+            return i.place_id==pl.get('id')
+          })[0].rate_jd_real.toFixed(2).toString().replace("\.", ','))
+          c.focus(true)
+        }}},
+        getEditor:function(record, defaultValue){return Ext.create('Ext.grid.CellEditor', {field:this.field})}
+      })
+      // Ставка GR
+      ratesColumn.columns.push({header:"GR", dataIndex:'codes', width:55, editable:true, align:'right',
+        renderer:function(data, metaData, rec, rowIndex, colIndex, store, view){
+          return Ext.Array.filter(rec.get('codes'), function(i){ 
+            return i.place_id==pl.get('id') 
+          })[0].rate_jd.toFixed(2).toString().replace("\.", ',');
+        },
+        field:{xtype:'textfield', place_id:pl.get('id'), param:'rate_jd', listeners:{focus:function(c, options){
+          Ext.ComponentQuery.query('carsgrid')[0].lastEditorId = c.id;
+          col = cmp.plugins[0].getActiveColumn(); rec = cmp.plugins[0].getActiveRecord();
+          c.setValue(Ext.Array.filter(rec.get('codes'), function(i){ 
+            return i.place_id==pl.get('id')
+          })[0].rate_jd.toFixed(2).toString().replace("\.", ','))
+          c.focus(true)
+        }}},
+        getEditor:function(record, defaultValue){return Ext.create('Ext.grid.CellEditor', {field:this.field})}
+      })
       // Ставка КЛИЕНТУ
-      ratesColumn.columns.push({header:"КЛ.", dataIndex:"codes", width:55, tdCls:'border-right', cls:'border-right', align:'right',
+      ratesColumn.columns.push({header:"КЛ", dataIndex:"codes", width:55, tdCls:'border-right', cls:'border-right', align:'right',
           renderer:function(data, metaData, rec, rowIndex, colIndex, store, view){
             return Ext.Array.filter(rec.get('codes'), function(i){ 
               return i.place_id==pl.get('id') 

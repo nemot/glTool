@@ -3,9 +3,53 @@ class ClientsController < ApplicationController
   before_filter :no_engineer, :only=>[:users, :update_permission]
   before_filter :engineer_has_access, :only=>[:update, :destroy]
 
-
   # To json params
-  @@client_fields = [:id,:name,:address,:phone,:email,:director,:payment_details,:is_expeditor, :contract_number, :contract_date,:balance,:created_at];
+  @@client_fields = [:id,:name,:address,:phone,:email,:director,:payment_details,:is_expeditor, :contract_number, :contract_date,:balance, :balance_expeditor, :balance_client, :delta, :created_at];
+  @@client_menthods = [:requests_without_invoice, :unpayed_invoices]
+
+  def get_total_report
+    params[:year] = params[:year].to_i
+    begin
+      send_file "lib/reports/client/#{params[:year]}.xls", :filename=>"СВОД_#{params[:year]}.xls"
+    rescue
+      render :text=>"<h1>Что-то не так... Видимо такого отчета нет на сервере.</h1>"
+    end
+  end
+
+  def client_report
+    client = Client.find_by_id(params[:id])
+    begin
+      send_file "lib/reports/client/#{params[:year]}_#{params[:id].to_i}.xls", :filename=>"#{params[:year]}-#{client.name}.xls"
+    rescue
+      render :text=>"<h1>Что-то не так... Видимо такого отчета нет на сервере.</h1><br/>Перед тем как звонить Роме проверьте чтоб в названии клиента не было ковычек"
+    end
+  end
+
+  def exp_report
+    unless current_user.is_engineer?
+      client = Client.find_by_id(params[:id])
+      send_file "lib/reports/expeditor/#{params[:year]}_#{params[:id].to_i}.xls", :filename=>"#{params[:year]}-#{client.name}.xls"
+    else  
+      render :text=>"<h1>И кто это тут нас хакать пытается? =) </h1>"
+    end
+  end
+
+  def pgk_report
+    begin
+      client = Client.find_by_id(params[:id])
+      send_file "lib/reports/pgk/#{params[:year]}.xls", :filename=>"#{params[:year]}-39ст-#{client.name}.xls"
+    rescue  
+      render :text=>"<h1>Что-то не так... Видимо такого отчета нет на сервере.</h1>"
+    end
+  end
+
+  def show
+    @client = Client.find_by_id(params[:id])
+    render :json => {
+      :success=>true, 
+      :clients=>@client.as_json(:only=>@@client_fields, :methods=>@@client_menthods)
+    }
+  end
 
   def users
     @users = User.all
@@ -77,7 +121,7 @@ class ClientsController < ApplicationController
     render :json => {
       :success=>true, 
       :total=>count, 
-      :clients=>@clients.as_json(:only=>@@client_fields)
+      :clients=>@clients.as_json(:only=>@@client_fields, :methods=>@@client_menthods)
     }
   end
 
@@ -89,7 +133,7 @@ class ClientsController < ApplicationController
     current_user.log('client.update', client.name, client.to_json) if client.errors.empty?
     render :json => {
       :success=>client.errors.empty?, 
-      :clients=>client.as_json(:only=>@@client_fields)
+      :clients=>client.as_json(:only=>@@client_fields, :methods=>@@client_menthods)
     }
   end
 
@@ -101,7 +145,7 @@ class ClientsController < ApplicationController
     client.users << current_user
     render :json => {
       :success=>client.errors.empty?, 
-      :clients=>client.as_json(:only=>@@client_fields)
+      :clients=>client.as_json(:only=>@@client_fields, :methods=>@@client_menthods)
     }
   end
 
@@ -120,7 +164,7 @@ class ClientsController < ApplicationController
     render :json => {
       :success=>deleted_records_num.eql?(1), 
       :total=>count, 
-      :clients=>@clients.as_json(:only=>@@client_fields)
+      :clients=>@clients.as_json(:only=>@@client_fields, :methods=>@@client_menthods)
     }
   end
 

@@ -27,7 +27,7 @@ Ext.define('Gl.view.users.MainGrid', {
     {header: 'Был в системе', xtype:'user_wasat_column', dataIndex:'was_online', menuDisabled:true}
   ],
   tbar:[
-    {text:'Добавить', iconCls:'add', id:"userAddBtn"}
+    {text:'Добавить', iconCls:'add', id:"userAddBtn", height:30, padding:'0 5 0 10'}
   ],
 
   initComponent: function(){

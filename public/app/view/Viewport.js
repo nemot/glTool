@@ -19,6 +19,8 @@ Ext.define('Gl.view.Viewport', {
 
       'Gl.view.bills.TabPanel',
       'Gl.view.bills.MainGrid',
+//      'Gl.view.bills.OutboxWindow',
+//      'Gl.view.bills.InboxWindow',
 
       'Gl.view.requests.MainGrid',
     ],

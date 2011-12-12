@@ -20,6 +20,9 @@ Ext.define('Gl.Application', {
     ],
 
     autoCreateViewport: true,
+    serverError: function(){
+      Ext.example.msg('Ошибка на сервере!', 'Произошла ошибка на сервере. Было послано письмо администратору с описанием проблемы.');
+    },
 
     launch: function() {
         Gl.App = this;

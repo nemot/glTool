@@ -4,6 +4,7 @@ class CreateBills < ActiveRecord::Migration
       t.integer  :client_id, :null=>false
       t.integer  :created_user_id, :null=>false
       t.boolean  :inbox, :default=>false
+      
 
       t.string   :number, :null=>false, :default => ""
       t.float    :summ, :null=>false, :default => 0.00
@@ -15,8 +16,6 @@ class CreateBills < ActiveRecord::Migration
 
       t.boolean  :payed,    :default => false
       t.datetime :payed_at, :null=>true
-
-
       
       t.timestamps
     end

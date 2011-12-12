@@ -5,10 +5,10 @@ Ext.define('Gl.store.Requests', {
   sorters: [{property : 'id', direction: 'DESC'}],
   
   proxy: {
-    type: 'rest',
-    url : '/requests', extraParams:{find_code:true},
-    reader: {type:'json', root:'requests',},
-//    writer: {type:'json', root:'requests', writeAllFields:true}
+    type: 'rest', url : '/requests', 
+    extraParams:{find_code:true, has_invoice:'all', find_param:'code'},
+    reader: {type:'json', root:'requests', idProperty:'id'},
+    writer: {type:'json', root:'requests', writeAllFields:true}
   }
 
 });

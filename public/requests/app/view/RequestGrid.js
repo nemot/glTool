@@ -98,7 +98,6 @@ Ext.define('Rq.view.RequestGrid', {
   },
 
   initComponent: function(params){
-
     this.source = this.rec.getProperties();
     this.on('propertychange',this.dataChanged);
     this.on('beforeedit', this.disableEditingForFields);
@@ -122,11 +121,12 @@ Ext.define('Rq.view.RequestGrid', {
       current_request.set('rate_for_car',false);
       Ext.ComponentQuery.query('requestgrid')[0].setSource(current_request.getProperties())
     }
-//    current_request.setFromProperties(source)
+    
     // И пересчитываем заявку
     if(Ext.ComponentQuery.query('requestgrid')[0] && Ext.ComponentQuery.query('costsgrid')[0]) {
       Rq.controller.Requests.calculateRequest()
     }
+    current_request.setFromProperties(source)
   }
 });
 

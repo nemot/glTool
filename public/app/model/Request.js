@@ -24,9 +24,7 @@ Ext.define('Gl.model.Request', {
 
     {name:'client_sum', type:'float'}, 
     {name:'jd_sum', type:'float'}, 
-    {name:'profit', type:'float', 
-      convert:function(v,rec){return (rec.get('client_sum') - rec.get('jd_sum')).toFixed(2)}
-    },
+    {name:'profit', type:'float'},
     {name:'cars_num', type:'int'}, 
     {name:'common_tonnage', type:'int'}, 
     {name:'created_user_id', type:'int'},

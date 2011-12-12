@@ -12,6 +12,7 @@ Ext.define('Gl.model.Bill', {
     {name:'number', type:'string'},
     {name:'summ', type:'float'},
     {name:'backwash', type:'float'},
+    {name:'requests_count', type:'int'},
 
     {name:'sent', type:'boolean'},
     {name:'sent_at', type:'date', dateFormat:'c'},

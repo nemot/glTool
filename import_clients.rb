@@ -31,7 +31,7 @@ while row = res.fetch_hash do
     :is_expeditor => row["isExpeditor"],
     :contract_number => "",
     :contract_date => Date.today,
-    :balance => 0
+    :balance_client => 0
   })
   clients_index.merge!({row["id"]=>client.id})
   cpres.free
@@ -58,7 +58,7 @@ while row = res.fetch_hash do
       :sender => row["sender"],
       :receiver => row["receiver"],
       :gu12 => row["gu12"],
-      :rate_for_car => row["rate_type"].eql?(1),
+      :rate_for_car => row["rate_type"].to_i.eql?(0),
       :client_sum => row["rate_client"].to_f,
       :jd_sum => row["rate_jd"].to_f,
       :cars_num => row["car_count"].to_i,
@@ -84,9 +84,9 @@ while row = res.fetch_hash do
           Cost.create({
             :place_id=>place.id, 
             :name=>cost_row["cost_type"]||"", 
-            :rate_jd=>(row["cost_in"]||0).to_f, 
-            :rate_client=>(row["cost_out"]||0).to_f,
-            :payment_type=>(row["amount_type"]||0).to_i
+            :rate_jd=>(cost_row["cost_in"]).to_f, 
+            :rate_client=>(cost_row["cost_out"]).to_f,
+            :payment_type=>[1,2,0][(cost_row["amount_type"]||0).to_i]
           })
         end
         costs_res.free

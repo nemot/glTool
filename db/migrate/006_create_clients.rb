@@ -12,10 +12,16 @@ class CreateClients < ActiveRecord::Migration
       t.string    :contract_number, :default=>""
       t.datetime  :contract_date,  :default=>Date.today
 
-      t.float     :balance, :default=>0, :null=>false
+      t.float     :balance_client,    :default=>0, :null=>false
+      t.float     :balance_expeditor, :default=>0, :null=>false
+      t.float     :delta,   :default=>0, :null=>false
+
+      
 
       t.timestamps
     end
+
+    add_index :clients, :name
   end
 
   def self.down

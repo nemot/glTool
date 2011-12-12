@@ -18,6 +18,7 @@ If you are unsure which license is appropriate for your use, please contact the 
  * 6 November 2007
  */
 Ext.onReady(function() {
+    
     if(Ext.Updater) {
         Ext.Updater.defaults.indicatorText = '<div class="loading-indicator">Идет загрузка...</div>';
     }

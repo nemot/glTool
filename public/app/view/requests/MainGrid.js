@@ -7,19 +7,6 @@ Ext.define('Gl.view.requests.MainGrid', {
   sortableColumns:false,
   columnLines:true,
 
-  
-
-  viewConfig: {
-      plugins: {
-          ptype: 'gridviewdragdrop',
-          dragGroup: 'firstGridDDGroup',
-          dropGroup: 'secondGridDDGroup',
-      },
-      listeners: {
-          
-      }
-  },
-
   columns:{
     items: [
       {header:'В инвойсе', dataIndex:'has_invoice', width:80, align:'center', renderer:function(v){
@@ -44,15 +31,16 @@ Ext.define('Gl.view.requests.MainGrid', {
   },
 
   tbar:[
-    {text:'Добавить', iconCls:'add', id:"requestAddBtn"}, 
+    {text:'Добавить', iconCls:'add', id:"requestAddBtn", height:30, padding:'0 5 0 10'}, 
     '-',
-    {text:'Только порожняк', enableToggle: true, toggleHandler: function(btn, state){
+    {text:'Только порожняк', enableToggle: true, height:30, padding:'0 5 0 10', toggleHandler: function(btn, state){
       var store = Ext.ComponentQuery.query('requestsgrid')[0].getStore();
       store.getProxy().extraParams.loadless=state;
       store.load();
     }},
     '->',
-    {xtype:'textfield', id:'requestsQueryField', emptyText:'Поиск...', listeners: {
+    '-',
+    {xtype:'textfield', id:'requestsQueryField' , emptyText:'Поиск...', listeners: {
       specialkey: function(field,e ) {
         if (e.getKey() == e.ENTER) {
           var store = Ext.ComponentQuery.query('requestsgrid')[0].getStore();
@@ -68,7 +56,6 @@ Ext.define('Gl.view.requests.MainGrid', {
       }}
     },
     '-',
-    
   ],
 
 
@@ -98,20 +85,6 @@ Ext.define('Gl.view.requests.MainGrid', {
     menu.add(deleteAction);
     menu.showAt(e.getXY())
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -11,7 +11,7 @@ Ext.define('Gl.controller.Clients', {
         "#editClientBtn": {click:this.editClient},
         "#financesClientBtn": {click:this.showFinances},
 
-        "clientsgrid":{itemdblclick: (current_user.is_engineer() ? this.editClient : this.showFinances)},
+        "clientsgrid":{itemdblclick: this.editClient},
         // Транзакции        
         "#clientFinancesGrid": {itemclick:this.editTransaction},
         "#addTransactionBtn": {click:this.addTransaction},
@@ -19,8 +19,13 @@ Ext.define('Gl.controller.Clients', {
         "#saveTransactionBtn": {click:this.saveTransaction},
         "#clearTransactionFormBtn": {click:this.clearTransactionForm},
         // Права доступа
-        "#permissionsClientBtn": {click: this.showPermissionsWindow}
+//        "#permissionsClientBtn": {click: this.showPermissionsWindow},
+        "#downloadReportAction":{click: this.showReportsWindow}
       })
+    },
+
+    showReportsWindow: function(){
+      Ext.ComponentQuery.query('clientsgrid')[0].getSelectionModel().getSelection()[0]
     },
 
     showPermissionsWindow: function(){
